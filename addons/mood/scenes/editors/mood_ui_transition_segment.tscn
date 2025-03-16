@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://e0ius7pwelnb"]
+
+[ext_resource type="Script" uid="uid://dvcddux37oc7u" path="res://addons/mood/scenes/editors/mood_ui_transition_segment.gd" id="1_xc7ed"]
+
+[node name="MoodUiTransitionSegment" type="HBoxContainer" node_paths=PackedStringArray("target_mood_label", "save_to_tree_button", "condition_container")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_xc7ed")
+target_mood_label = NodePath("MoodNameContainer/VBoxContainer/MoodName")
+save_to_tree_button = NodePath("MoodNameContainer/VBoxContainer/SaveToTree")
+condition_container = NodePath("ConditionContainer")
+
+[node name="MoodNameContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MoodNameContainer"]
+layout_mode = 2
+
+[node name="MoodName" type="Label" parent="MoodNameContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="SaveToTree" type="Button" parent="MoodNameContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "Save to Tree"
+
+[node name="ConditionContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="pressed" from="MoodNameContainer/VBoxContainer/SaveToTree" to="." method="_on_save_to_tree_pressed"]

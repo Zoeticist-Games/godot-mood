@@ -1,0 +1,216 @@
+[gd_scene load_steps=7 format=3 uid="uid://c8ha2ga6v0w3a"]
+
+[ext_resource type="Script" uid="uid://btiqt3wa6p28e" path="res://addons/mood/scenes/editors/mood_ui_condition_property.gd" id="1_ayhqb"]
+[ext_resource type="Texture2D" uid="uid://xicidjwtgaq0" path="res://addons/mood/icons/mood_trash.png" id="2_76o34"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o3bqq"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 1
+border_color = Color(0.6, 0.6, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yrtka"]
+draw_center = false
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.6, 0.6, 0.6, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fupwr"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+draw_center = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bnf3b"]
+content_margin_left = 2.0
+content_margin_right = 2.0
+
+[node name="MoodUiConditionProperty" type="VBoxContainer" node_paths=PackedStringArray("index_label", "remove_button", "go_to_node_button")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = -804.0
+offset_bottom = 120.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+script = ExtResource("1_ayhqb")
+index_label = NodePath("HeaderContainer/HBoxContainer/HBoxContainer/Index")
+remove_button = NodePath("HeaderContainer/HBoxContainer/RemoveConditionButton")
+go_to_node_button = NodePath("HeaderContainer/HBoxContainer/HBoxContainer/GoToNodeButton")
+
+[node name="HeaderContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_o3bqq")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HeaderContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HeaderContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Index" type="Label" parent="HeaderContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.333333, 0.952941, 0.890196, 1)
+text = "0"
+
+[node name="GoToNodeButton" type="Button" parent="HeaderContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "➡️"
+
+[node name="RemoveConditionButton" type="Button" parent="HeaderContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 10
+icon = ExtResource("2_76o34")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ConditionContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_yrtka")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ConditionContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="PropSelectorContainer" type="PanelContainer" parent="ConditionContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_fupwr")
+
+[node name="PropPicker" type="HBoxContainer" parent="ConditionContainer/HBoxContainer/PropSelectorContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConditionContainer/HBoxContainer/PropSelectorContainer/PropPicker"]
+layout_mode = 2
+
+[node name="PropertySelectorButton" type="Button" parent="ConditionContainer/HBoxContainer/PropSelectorContainer/PropPicker/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Choose Property"
+
+[node name="MethodSelectorButton" type="Button" parent="ConditionContainer/HBoxContainer/PropSelectorContainer/PropPicker/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Choose Method"
+
+[node name="SelectedProperty" type="Label" parent="ConditionContainer/HBoxContainer/PropSelectorContainer/PropPicker"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.497474, 0.497474, 0.497474, 1)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_bnf3b")
+text = "Select a Property..."
+horizontal_alignment = 1
+
+[node name="Condition" type="OptionButton" parent="ConditionContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+selected = 0
+item_count = 6
+popup/item_0/text = "=="
+popup/item_0/id = 0
+popup/item_1/text = "<"
+popup/item_1/id = 1
+popup/item_2/text = "<="
+popup/item_2/id = 2
+popup/item_3/text = ">"
+popup/item_3/id = 3
+popup/item_4/text = ">="
+popup/item_4/id = 4
+popup/item_5/text = "!="
+popup/item_5/id = 5
+
+[node name="PropEditContainer" type="MarginContainer" parent="ConditionContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NumberEdit" type="LineEdit" parent="ConditionContainer/HBoxContainer/PropEditContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+expand_to_text_length = true
+virtual_keyboard_type = 3
+
+[node name="StringEdit" type="LineEdit" parent="ConditionContainer/HBoxContainer/PropEditContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+expand_to_text_length = true
+
+[node name="EnumEdit" type="OptionButton" parent="ConditionContainer/HBoxContainer/PropEditContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+allow_reselect = true
+
+[node name="BoolEdit" type="CheckBox" parent="ConditionContainer/HBoxContainer/PropEditContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="NodeEdit" type="VBoxContainer" parent="ConditionContainer/HBoxContainer/PropEditContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="SelectedNodeLabel" type="HBoxContainer" parent="ConditionContainer/HBoxContainer/PropEditContainer/NodeEdit"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="SelectedNodeIcon" type="TextureRect" parent="ConditionContainer/HBoxContainer/PropEditContainer/NodeEdit/SelectedNodeLabel"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+expand_mode = 1
+
+[node name="SelectedNodeName" type="Label" parent="ConditionContainer/HBoxContainer/PropEditContainer/NodeEdit/SelectedNodeLabel"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NodeEditButton" type="Button" parent="ConditionContainer/HBoxContainer/PropEditContainer/NodeEdit"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "Assign..."
+
+[node name="PlaceholderEdit" type="Label" parent="ConditionContainer/HBoxContainer/PropEditContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.497474, 0.497474, 0.497474, 1)
+text = "<Selected Editor>"
+
+[connection signal="pressed" from="HeaderContainer/HBoxContainer/HBoxContainer/GoToNodeButton" to="." method="_on_go_to_node_button_pressed"]
+[connection signal="pressed" from="HeaderContainer/HBoxContainer/RemoveConditionButton" to="." method="_on_remove_condition_button_pressed"]
+[connection signal="pressed" from="ConditionContainer/HBoxContainer/PropSelectorContainer/PropPicker/VBoxContainer/PropertySelectorButton" to="." method="_on_property_selector_button_pressed"]
+[connection signal="pressed" from="ConditionContainer/HBoxContainer/PropSelectorContainer/PropPicker/VBoxContainer/MethodSelectorButton" to="." method="_on_method_selector_pressed"]
+[connection signal="item_selected" from="ConditionContainer/HBoxContainer/Condition" to="." method="_on_condition_item_selected"]
+[connection signal="text_changed" from="ConditionContainer/HBoxContainer/PropEditContainer/NumberEdit" to="." method="_on_number_edit_text_changed"]
+[connection signal="text_changed" from="ConditionContainer/HBoxContainer/PropEditContainer/StringEdit" to="." method="_on_string_edit_text_changed"]
+[connection signal="item_selected" from="ConditionContainer/HBoxContainer/PropEditContainer/EnumEdit" to="." method="_on_enum_edit_item_selected"]
+[connection signal="toggled" from="ConditionContainer/HBoxContainer/PropEditContainer/BoolEdit" to="." method="_on_bool_edit_toggled"]
+[connection signal="pressed" from="ConditionContainer/HBoxContainer/PropEditContainer/NodeEdit/NodeEditButton" to="." method="_on_node_edit_pressed"]

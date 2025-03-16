@@ -1,0 +1,32 @@
+{
+ "background_color": "262626ff",
+ "compact_mode": false,
+ "configured_dirs": [
+  "res://tests"
+ ],
+ "dirs": [
+  "res://tests"
+ ],
+ "disable_colors": false,
+ "double_strategy": 1,
+ "errors_do_not_cause_failure": false,
+ "font_color": "ccccccff",
+ "font_name": "CourierPrime",
+ "font_size": 12.0,
+ "gut_on_top": true,
+ "hide_orphans": false,
+ "ignore_pause": false,
+ "include_subdirs": true,
+ "junit_xml_file": "",
+ "junit_xml_timestamp": false,
+ "log_level": 1.0,
+ "opacity": 100.0,
+ "paint_after": 0.1,
+ "post_run_script": "res://tests/post_run_hook.gd",
+ "pre_run_script": "",
+ "prefix": "",
+ "should_exit": true,
+ "should_exit_on_success": true,
+ "should_maximize": false,
+ "suffix": "_test.gd"
+}

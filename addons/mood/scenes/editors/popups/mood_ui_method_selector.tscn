@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgv2qbdxews1u"]
+
+[ext_resource type="Script" path="res://addons/mood/scenes/editors/popups/mood_ui_method_selector.gd" id="1_mpwnu"]
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" node_paths=PackedStringArray("item_list")]
+auto_translate_mode = 1
+title = "Select a Method..."
+initial_position = 4
+size = Vector2i(400, 480)
+visible = true
+min_size = Vector2i(400, 320)
+max_size = Vector2i(800, 1200)
+content_scale_mode = 1
+dialog_close_on_escape = false
+script = ExtResource("1_mpwnu")
+item_list = NodePath("VBoxContainer/ScrollContainer/MethodList")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 392.0
+offset_bottom = 431.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MethodList" type="ItemList" parent="VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+auto_height = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Method"
+
+[node name="MethodSearch" type="TextEdit" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search for Method"
+
+[connection signal="confirmed" from="." to="." method="_on_confirmed"]
+[connection signal="custom_action" from="." to="." method="_on_custom_action"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/MethodSearch" to="." method="_on_text_edit_text_changed"]

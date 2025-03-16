@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=3 uid="uid://312iou8ys0gt"]
+
+[ext_resource type="Script" uid="uid://ddo84t7hjdq30" path="res://addons/mood/scenes/editors/popups/mood_ui_action_selector.gd" id="1_qj6p1"]
+
+[node name="MoodUiActionSelector" type="ConfirmationDialog" node_paths=PackedStringArray("item_list", "action_search")]
+title = "Select Actions"
+initial_position = 4
+size = Vector2i(400, 480)
+visible = true
+content_scale_mode = 1
+script = ExtResource("1_qj6p1")
+item_list = NodePath("VBoxContainer/ScrollContainer/ItemList")
+action_search = NodePath("VBoxContainer/HBoxContainer/ActionSearch")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 392.0
+offset_bottom = 431.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(300, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ItemList" type="ItemList" parent="VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+select_mode = 1
+allow_reselect = true
+allow_rmb_select = true
+auto_height = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Method"
+
+[node name="ActionSearch" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search for Action"
+
+[connection signal="confirmed" from="." to="." method="_on_confirmed"]
+[connection signal="custom_action" from="." to="." method="_on_custom_action"]
+[connection signal="multi_selected" from="VBoxContainer/ScrollContainer/ItemList" to="." method="_on_item_list_multi_selected"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/ActionSearch" to="." method="_on_action_search_text_changed"]

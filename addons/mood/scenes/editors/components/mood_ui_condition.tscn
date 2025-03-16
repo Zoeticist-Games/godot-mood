@@ -1,0 +1,77 @@
+[gd_scene load_steps=4 format=3 uid="uid://cqi4i8tepx3tp"]
+
+[ext_resource type="Script" uid="uid://dni7iqh06dv1r" path="res://addons/mood/scenes/editors/components/mood_ui_condition.gd" id="1_w8vpq"]
+[ext_resource type="Texture2D" uid="uid://xicidjwtgaq0" path="res://addons/mood/icons/mood_trash.png" id="2_6sa07"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sm5v0"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 1
+
+[node name="MoodUiCondition" type="VBoxContainer" node_paths=PackedStringArray("index_label", "remove_button", "condition_panel", "no_sub_editor_panel", "go_to_node_button")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w8vpq")
+index_label = NodePath("HeaderContainer/HBoxContainer/HBoxContainer/IndexLabel")
+remove_button = NodePath("HeaderContainer/HBoxContainer/RemoveCondition")
+condition_panel = NodePath("PanelContainer")
+no_sub_editor_panel = NodePath("PanelContainer/NoSubEditorContainer")
+go_to_node_button = NodePath("HeaderContainer/HBoxContainer/HBoxContainer/GoToNodeButton")
+
+[node name="HeaderContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_sm5v0")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HeaderContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HeaderContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="IndexLabel" type="Label" parent="HeaderContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.333333, 0.952941, 0.890196, 1)
+text = "-1"
+
+[node name="GoToNodeButton" type="Button" parent="HeaderContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "➡️"
+
+[node name="RemoveCondition" type="Button" parent="HeaderContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 0
+tooltip_text = "Remove this condition group."
+icon = ExtResource("2_6sa07")
+icon_alignment = 1
+expand_icon = true
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+
+[node name="NoSubEditorContainer" type="MarginContainer" parent="PanelContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="PanelContainer/NoSubEditorContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "View the node in the editor to see details."
+vertical_alignment = 1
+
+[connection signal="pressed" from="HeaderContainer/HBoxContainer/HBoxContainer/GoToNodeButton" to="." method="_on_go_to_node_button_pressed"]
+[connection signal="pressed" from="HeaderContainer/HBoxContainer/RemoveCondition" to="." method="_on_remove_condition_pressed"]

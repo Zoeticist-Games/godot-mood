@@ -1,0 +1,257 @@
+[gd_resource type="EditorSettings" load_steps=2 format=3 uid="uid://cr8ad3c6al2vq"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_2s0qe"]
+keycode = 4194326
+
+[resource]
+interface/editor/editor_screen = -4
+interface/editor/project_manager_screen = -4
+interface/editor/code_font_contextual_ligatures = 0
+interface/editor/show_update_spinner = 1
+interface/editor/vsync_mode = 0
+docks/scene_tree/ask_before_revoking_unique_name = false
+interface/theme/base_color = Color(0.21, 0.24, 0.29, 1)
+interface/theme/accent_color = Color(0.44, 0.73, 0.98, 1)
+interface/scene_tabs/show_script_button = true
+filesystem/quick_open_dialog/include_addons = true
+text_editor/behavior/files/open_dominant_script_on_scene_change = true
+text_editor/script_list/sort_members_outline_alphabetically = true
+text_editor/completion/idle_parse_delay = 2.0
+editors/3d_gizmos/gizmo_settings/bone_axis_length = 0.1
+editors/tiles_editor/highlight_selected_layer = false
+network/connection/network_mode = 1
+version_control/username = "kuraiou"
+version_control/ssh_public_key_path = "/Users/zolome41/.ssh/github_id_ed25519.pub"
+version_control/ssh_private_key_path = "/Users/zolome41/.ssh/github_id_ed25519"
+run/window_placement/play_window_pip_mode = 0
+interface/editor/debug/enable_pseudolocalization = false
+export/android/android_sdk_path = ""
+export/android/debug_keystore = ""
+export/android/debug_keystore_pass = "android"
+export/ios/ios_deploy = ""
+export/macos/rcodesign = ""
+export/web/http_port = 8060
+export/web/tls_key = ""
+export/web/tls_certificate = ""
+export/windows/rcedit = ""
+export/windows/osslsigncode = ""
+export/windows/wine = ""
+_default_feature_profile = "test"
+_use_favorites_root_selection = false
+editors/3d_gizmos/gizmo_colors/path = Color(0.5, 0.5, 1, 0.9)
+dotnet/editor/external_editor = 0
+dotnet/editor/custom_exec_path = ""
+dotnet/editor/custom_exec_path_args = ""
+dotnet/build/verbosity_level = 2
+dotnet/build/no_console_logging = false
+dotnet/build/create_binary_log = false
+dotnet/build/problems_layout = 1
+export/android/java_sdk_path = ""
+editors/stateful_machinery/auto_switch_to_graph = false
+editors/stateful_machinery/use_low_processor_for_graphs = false
+editors/stateful_machinery/use_low_processor_mode_for_graphs = false
+_editor_settings_advanced_mode = false
+_export_template_download_directory = ""
+_script_setup_templates_dictionary = {
+"": "0ObjectEmpty",
+"A": "0ObjectEmpty",
+"C": "0ObjectEmpty",
+"Ch": "0ObjectEmpty",
+"Cha": "0ObjectEmpty",
+"Chal": "0ObjectEmpty",
+"Chall": "0ObjectEmpty",
+"Challe": "0ObjectEmpty",
+"Challen": "0ObjectEmpty",
+"Challeng": "0ObjectEmpty",
+"ChallengT": "0ObjectEmpty",
+"ChallengTe": "0ObjectEmpty",
+"ChallengTes": "0ObjectEmpty",
+"ChallengTest": "0ObjectEmpty",
+"Challenge": "0ObjectEmpty",
+"ChallengeO": "0ObjectEmpty",
+"ChallengeOu": "0ObjectEmpty",
+"ChallengeOut": "0ObjectEmpty",
+"ChallengeOutc": "0ObjectEmpty",
+"ChallengeOutco": "0ObjectEmpty",
+"ChallengeOutcom": "0ObjectEmpty",
+"ChallengeOutcome": "0ObjectEmpty",
+"ChallengeTest": "0ObjectEmpty",
+"G": "0ObjectEmpty",
+"Ga": "0ObjectEmpty",
+"Gam": "0ObjectEmpty",
+"GamE": "0ObjectEmpty",
+"Game": "0ObjectEmpty",
+"GameO": "0ObjectEmpty",
+"GameOb": "0ObjectEmpty",
+"GameObj": "0ObjectEmpty",
+"GameObje": "0ObjectEmpty",
+"GameObjec": "0ObjectEmpty",
+"GameObject": "0ObjectEmpty",
+"I": "0ObjectEmpty",
+"It": "0ObjectEmpty",
+"Ite": "0ObjectEmpty",
+"IteM": "0ObjectEmpty",
+"IteMA": "0ObjectEmpty",
+"Item": "0ObjectEmpty",
+"ItemA": "0ObjectEmpty",
+"ItemAc": "0ObjectEmpty",
+"ItemAct": "0ObjectEmpty",
+"ItemActi": "0ObjectEmpty",
+"ItemActio": "0ObjectEmpty",
+"ItemAction": "0ObjectEmpty",
+"ItemL": "0ObjectEmpty",
+"ItemLa": "0ObjectEmpty",
+"ItemLab": "0ObjectEmpty",
+"ItemLabe": "0ObjectEmpty",
+"ItemLabel": "0ObjectEmpty",
+"M": "0ObjectEmpty",
+"Mo": "0ObjectEmpty",
+"Mon": "0ObjectEmpty",
+"Mons": "0ObjectEmpty",
+"Monst": "0ObjectEmpty",
+"Monste": "0ObjectEmpty",
+"Monster": "0ObjectEmpty",
+"MonsterA": "0ObjectEmpty",
+"MonsterAI": "0ObjectEmpty",
+"MonsterAIP": "0ObjectEmpty",
+"MonsterAIPa": "0ObjectEmpty",
+"MonsterAIPar": "0ObjectEmpty",
+"MonsterAIPart": "0ObjectEmpty",
+"MonsterAc": "0ObjectEmpty",
+"MonsterAct": "0ObjectEmpty",
+"MonsterActi": "0ObjectEmpty",
+"MonsterActio": "0ObjectEmpty",
+"MonsterAction": "0ObjectEmpty",
+"MonsterAi": "0ObjectEmpty",
+"MonsterT": "0ObjectEmpty",
+"MonsterTa": "0ObjectEmpty",
+"MonsterTar": "0ObjectEmpty",
+"MonsterTarg": "0ObjectEmpty",
+"MonsterTarge": "0ObjectEmpty",
+"MonsterTarget": "0ObjectEmpty",
+"MonsterTargetS": "0ObjectEmpty",
+"MonsterTargetSe": "0ObjectEmpty",
+"MonsterTargetSel": "0ObjectEmpty",
+"MonsterTargetSele": "0ObjectEmpty",
+"MonsterTargetSelec": "0ObjectEmpty",
+"MonsterTargetSelect": "0ObjectEmpty",
+"MonsterTargetSelecti": "0ObjectEmpty",
+"MonsterTargetSelectio": "0ObjectEmpty",
+"MonsterTargetSelection": "0ObjectEmpty",
+"MonsterTe": "0ObjectEmpty",
+"MonsterTes": "0ObjectEmpty",
+"MonsterTest": "0ObjectEmpty",
+"Monstet": "0ObjectEmpty",
+"Monstetr": "0ObjectEmpty",
+"Node": "0ObjectEmpty",
+"Node2D": "0NodeDefault",
+"R": "0ObjectEmpty",
+"Re": "0ObjectEmpty",
+"Res": "0ObjectEmpty",
+"Reso": "0ObjectEmpty",
+"Resou": "0ObjectEmpty",
+"Resour": "0ObjectEmpty",
+"Resourc": "0ObjectEmpty",
+"Resource": "0ObjectEmpty",
+"StateNodeScript": "0NodeDefault",
+"p": "0ObjectEmpty"
+}
+_script_setup_use_script_templates = true
+_project_settings_advanced_mode = true
+importality/temporary_files_directory_path = ""
+importality/aseprite_or_libre_sprite_command = ""
+importality/aseprite_or_libre_sprite_command_arguments = PackedStringArray()
+importality/krita_command = ""
+importality/krita_command_arguments = PackedStringArray()
+importality/pencil2d_command = ""
+importality/pencil2d_command_arguments = PackedStringArray()
+importality/command_building_rules_for_custom_image_loader = PackedStringArray()
+asset_library/available_urls = {
+"godotengine.org (Official)": "https://godotengine.org/asset-library/api"
+}
+shortcuts = [{
+"name": "script_text_editor/convert_to_uppercase",
+"shortcuts": []
+}, {
+"name": "script_text_editor/convert_to_lowercase",
+"shortcuts": []
+}, {
+"name": "script_text_editor/capitalize",
+"shortcuts": []
+}, {
+"name": "spatial_editor/viewport_zoom_modifier_1",
+"shortcuts": [SubResource("InputEventKey_2s0qe")]
+}, {
+"name": "spatial_editor/viewport_zoom_modifier_2",
+"shortcuts": []
+}]
+metadata/script_setup_templates_dictionary = {
+"": "0ObjectEmpty",
+"Area2D": "0NodeDefault",
+"CanvasLayer": "0NodeDefault",
+"Control": "0NodeDefault",
+"F": "0ObjectEmpty",
+"Fi": "0ObjectEmpty",
+"Fin": "0ObjectEmpty",
+"Fini": "0ObjectEmpty",
+"Finit": "0ObjectEmpty",
+"Finite": "0ObjectEmpty",
+"FiniteS": "0ObjectEmpty",
+"FiniteSt": "0ObjectEmpty",
+"FiniteSta": "0ObjectEmpty",
+"FiniteStae": "0ObjectEmpty",
+"FiniteStat": "0ObjectEmpty",
+"FiniteStateS": "0ObjectEmpty",
+"FiniteStateSc": "0ObjectEmpty",
+"FiniteStateScr": "0ObjectEmpty",
+"FiniteStateScri": "0ObjectEmpty",
+"FiniteStateScrip": "0ObjectEmpty",
+"FiniteStateScript": "0NodeDefault",
+"GraphEdit": "0NodeDefault",
+"I": "0ObjectEmpty",
+"In": "0ObjectEmpty",
+"Label": "0NodeDefault",
+"LaserBeam": "0NodeDefault",
+"Node": "0ObjectEmpty",
+"Node2D": "0NodeDefault",
+"ParallaxBackground": "0NodeDefault",
+"R": "0ObjectEmpty",
+"Re": "0ObjectEmpty",
+"Res": "0ObjectEmpty",
+"Reso": "0ObjectEmpty",
+"Resou": "0ObjectEmpty",
+"Resour": "0ObjectEmpty",
+"Resourc": "0ObjectEmpty",
+"Resource": "0ObjectEmpty",
+"S": "0ObjectEmpty",
+"ScrollContainer": "0NodeDefault",
+"St": "0ObjectEmpty",
+"Sta": "0ObjectEmpty",
+"Stat": "0ObjectEmpty",
+"State": "0ObjectEmpty",
+"StateN": "0ObjectEmpty",
+"StateNo": "0ObjectEmpty",
+"StateNod": "0ObjectEmpty",
+"StateNode": "0NodeDefault",
+"StateNodeS": "0ObjectEmpty",
+"StateNodeSc": "0ObjectEmpty",
+"StateNodeScr": "0ObjectEmpty",
+"StateNodeScri": "0ObjectEmpty",
+"StateNodeScrip": "0ObjectEmpty",
+"StateNodeScript": "0NodeDefault",
+"W": "0ObjectEmpty",
+"We": "0ObjectEmpty",
+"Wea": "0ObjectEmpty",
+"Weao": "0ObjectEmpty",
+"Weaoi": "0ObjectEmpty",
+"Weaoib": "0ObjectEmpty",
+"Weaop": "0ObjectEmpty",
+"Weap": "0ObjectEmpty",
+"Weapo": "0ObjectEmpty",
+"Weapon": "0NodeDefault",
+"WeaponF": "0ObjectEmpty",
+"WeaponFi": "0ObjectEmpty",
+"WeaponFir": "0ObjectEmpty",
+"WeaponFire": "0NodeDefault"
+}
+metadata/script_setup_use_script_templates = false

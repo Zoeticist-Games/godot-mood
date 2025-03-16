@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://p6wyyqyjw41i"]
+
+[ext_resource type="Script" uid="uid://bf0cphdrnpv7i" path="res://addons/mood/scenes/editors/mood_ui_condition_input.gd" id="1_m5kvl"]
+
+[node name="MoodUiConditionInput" type="VBoxContainer" node_paths=PackedStringArray("item_container", "action_list_container")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_m5kvl")
+item_container = NodePath("HBoxContainer/SelectedActionsContainer")
+action_list_container = NodePath("HBoxContainer")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SelectedActionsLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Selected Input Actions"
+
+[node name="SelectedActionsContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PopupButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Select Actions"
+
+[connection signal="pressed" from="VBoxContainer/PopupButton" to="." method="_on_popup_button_pressed"]

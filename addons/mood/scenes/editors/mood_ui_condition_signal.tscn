@@ -1,0 +1,95 @@
+[gd_scene load_steps=4 format=3 uid="uid://re6fnhfl3gnx"]
+
+[ext_resource type="Script" uid="uid://sc2vkxoafdh0" path="res://addons/mood/scenes/editors/mood_ui_condition_signal.gd" id="1_ssvwi"]
+[ext_resource type="Texture2D" uid="uid://xicidjwtgaq0" path="res://addons/mood/icons/mood_trash.png" id="2_jddwi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20ceh"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 1
+border_color = Color(0.6, 0.6, 0.6, 1)
+
+[node name="MoodUiSignalTransition" type="VBoxContainer" node_paths=PackedStringArray("index_label", "remove_button", "item_container", "signal_list_container", "signaler_button", "signaler_label")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_ssvwi")
+index_label = NodePath("HeaderContainer/HBoxContainer/HBoxContainer/Index")
+remove_button = NodePath("HeaderContainer/HBoxContainer/RemoveConditionButton")
+item_container = NodePath("HBoxContainer/ItemListContainer")
+signal_list_container = NodePath("HBoxContainer")
+signaler_button = NodePath("VBoxContainer/SelectSignalerButton")
+signaler_label = NodePath("VBoxContainer/SignalerLabel")
+
+[node name="HeaderContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_20ceh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HeaderContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HeaderContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Index" type="Label" parent="HeaderContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.333333, 0.952941, 0.890196, 1)
+text = "0"
+
+[node name="GoToNodeButton" type="Button" parent="HeaderContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "➡️"
+
+[node name="RemoveConditionButton" type="Button" parent="HeaderContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 10
+icon = ExtResource("2_jddwi")
+icon_alignment = 1
+expand_icon = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Selected Signals"
+
+[node name="ItemListContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SelectSignalerButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "Select Signaler"
+
+[node name="SignalerLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="PopupButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Select Signals"
+
+[connection signal="pressed" from="HeaderContainer/HBoxContainer/HBoxContainer/GoToNodeButton" to="." method="_on_go_to_node_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SelectSignalerButton" to="." method="_on_select_signaler_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/PopupButton" to="." method="_on_popup_button_pressed"]

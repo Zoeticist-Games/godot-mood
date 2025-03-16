@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx0qsxgbfuwg7"]
+
+[ext_resource type="Script" uid="uid://dt8l5e5xghfef" path="res://addons/mood/scenes/editors/mood_ui_transitions_container.gd" id="1_vepdv"]
+
+[node name="MoodUiTransitionsContainer" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_vepdv")
+
+[node name="Transitions" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[connection signal="child_exiting_tree" from="Transitions" to="." method="_on_groups_child_exiting_tree"]

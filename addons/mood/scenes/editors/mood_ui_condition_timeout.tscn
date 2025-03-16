@@ -1,0 +1,90 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7h0n2bxj1nmj"]
+
+[ext_resource type="Script" uid="uid://csu6dwsbjkxwp" path="res://addons/mood/scenes/editors/mood_ui_condition_timeout.gd" id="1_ggv8i"]
+
+[node name="MoodUiConditionTimeout" type="VBoxContainer" node_paths=PackedStringArray("validation_mode_button", "trigger_valid_button", "reset_on_reentry_button", "time_secs_input")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_ggv8i")
+validation_mode_button = NodePath("ValidationModeHBox/OptionButton")
+trigger_valid_button = NodePath("TriggerSetsValidHBox/TriggerSetsValidTo")
+reset_on_reentry_button = NodePath("ResetOnReEntryHBox/ResetOnReEntry")
+time_secs_input = NodePath("TimeSecHBox/TimeSecs")
+
+[node name="ValidationModeHBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ValidationModelabel" type="Label" parent="ValidationModeHBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Validation Mode:"
+
+[node name="OptionButton" type="OptionButton" parent="ValidationModeHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 4
+popup/item_0/text = "Valid Entry until Exit or Timeout"
+popup/item_0/id = 0
+popup/item_1/text = "Valid Exit to Re-Entry or Timeout"
+popup/item_1/id = 1
+popup/item_2/text = "Valid Entry until Timeout"
+popup/item_2/id = 2
+popup/item_3/text = "Valid Exit until Timeout"
+popup/item_3/id = 3
+
+[node name="TimeSecHBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TimeSecLabel" type="Label" parent="TimeSecHBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Time (sec)"
+
+[node name="TimeSecs" type="LineEdit" parent="TimeSecHBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+context_menu_enabled = false
+emoji_menu_enabled = false
+shortcut_keys_enabled = false
+
+[node name="TriggerSetsValidHBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TriggerValidLabel" type="Label" parent="TriggerSetsValidHBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Validation Mode Sets Valid To:"
+
+[node name="TriggerSetsValidTo" type="CheckButton" parent="TriggerSetsValidHBox"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[node name="ResetOnReEntryHBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ResetOnReEntryLabel" type="Label" parent="ResetOnReEntryHBox"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Reset Timer When Re-Triggering?"
+
+[node name="ResetOnReEntry" type="CheckButton" parent="ResetOnReEntryHBox"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+
+[connection signal="item_selected" from="ValidationModeHBox/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="text_changed" from="TimeSecHBox/TimeSecs" to="." method="_on_time_secs_text_changed"]
+[connection signal="pressed" from="TriggerSetsValidHBox/TriggerSetsValidTo" to="." method="_on_trigger_sets_valid_to_pressed"]
+[connection signal="pressed" from="ResetOnReEntryHBox/ResetOnReEntry" to="." method="_on_reset_on_re_entry_pressed"]

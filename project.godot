@@ -1,0 +1,69 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[addons]
+
+markdown_book/docs_folder="res://addons/mood/docs/"
+
+[application]
+
+config/name="Mood"
+run/main_scene="res://addons/mood/scenes/editors/mood_ui_transitions_container.tscn"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+LocalClassFunctions="*res://addons/mood/autoloads/local_class_functions.gd"
+Recursion="*res://addons/mood/autoloads/recursion.gd"
+InputTracker="*res://addons/mood/autoloads/input_tracker.gd"
+
+[debug]
+
+file_logging/enable_file_logging.pc=false
+gdscript/warnings/unused_private_class_variable=2
+gdscript/warnings/shadowed_variable_base_class=2
+gdscript/warnings/untyped_declaration=2
+canvas_items/debug_redraw_time=0.1
+canvas_items/debug_redraw_color=Color(0.871339, 0.368141, 0.459314, 0.647059)
+
+[display]
+
+window/size/initial_position_type=0
+window/per_pixel_transparency/allowed=true
+window/energy_saving/keep_screen_on.editor_hint=true
+
+[dotnet]
+
+project/assembly_name="Mood"
+
+[editor]
+
+script/search_in_file_extensions=PackedStringArray("gd", "gdshader", "txt")
+naming/script_name_casing=2
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/mood/plugin.cfg")
+
+[input]
+
+ui_accept={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194309,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":4194310,"physical_keycode":0,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":32,"physical_keycode":0,"key_label":0,"unicode":32,"location":0,"echo":false,"script":null)
+]
+}
+sprinting={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194325,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+]
+}

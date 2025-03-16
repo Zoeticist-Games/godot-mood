@@ -1,0 +1,259 @@
+[gd_scene load_steps=15 format=3 uid="uid://bflpa67sbry4n"]
+
+[ext_resource type="Script" uid="uid://cexmmjes4fv" path="res://examples/scenes/player.gd" id="1_an8x8"]
+[ext_resource type="Texture2D" uid="uid://b3vsw8i10o171" path="res://icon.svg" id="1_bom16"]
+[ext_resource type="Script" uid="uid://dojhtlp310d5d" path="res://addons/mood/nodes/mood_machine.gd" id="2_an8x8"]
+[ext_resource type="Script" uid="uid://0re6tuqk5egu" path="res://addons/mood/nodes/mood.gd" id="3_u1pv1"]
+[ext_resource type="Script" uid="uid://corvum2mgs3oh" path="res://addons/mood/nodes/mood_transition.gd" id="4_y8xmq"]
+[ext_resource type="Script" uid="uid://b66vkfnusc0f6" path="res://addons/mood/nodes/conditions/mood_condition_input.gd" id="5_fiv1m"]
+[ext_resource type="Script" uid="uid://lth7jksuyveq" path="res://addons/mood/nodes/conditions/mood_condition_timeout.gd" id="7_0ebda"]
+[ext_resource type="Script" uid="uid://b448uxn08i6o1" path="res://addons/mood/nodes/conditions/mood_condition_property.gd" id="7_u1pv1"]
+[ext_resource type="Script" uid="uid://6fcf7wp86vg3" path="res://examples/scenes/move_target.gd" id="8_fiv1m"]
+[ext_resource type="Script" uid="uid://qrxr1kr7m25j" path="res://examples/scenes/drain_stamina.gd" id="8_y8xmq"]
+[ext_resource type="Script" uid="uid://crhu6u6mstp77" path="res://examples/scenes/test_ui.gd" id="10_ogi84"]
+[ext_resource type="Script" uid="uid://bapwnus850ael" path="res://addons/mood/nodes/conditions/mood_condition_signal.gd" id="11_vrm4l"]
+[ext_resource type="Script" uid="uid://dcpo42vd114w3" path="res://examples/scenes/rage_handler.gd" id="12_dymhy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ogi84"]
+size = Vector2(65.75, 64.25)
+
+[node name="InputStateTest" type="Node2D"]
+
+[node name="Player" type="Area2D" parent="." node_paths=PackedStringArray("sprint_machine")]
+position = Vector2(135, 103)
+script = ExtResource("1_an8x8")
+move_speed = 200
+sprint_speed = 600
+sprint_machine = NodePath("SprintMachine")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+scale = Vector2(2, 2)
+texture = ExtResource("1_bom16")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(0.125, -0.125)
+shape = SubResource("RectangleShape2D_ogi84")
+debug_color = Color(0, 0.6, 0.701961, 0)
+
+[node name="MoveMachine" type="Node" parent="Player" node_paths=PackedStringArray("initial_mood", "target")]
+script = ExtResource("2_an8x8")
+initial_mood = NodePath("Idle")
+target = NodePath("..")
+metadata/_custom_type_script = "uid://dojhtlp310d5d"
+
+[node name="Idle" type="Node" parent="Player/MoveMachine"]
+script = ExtResource("3_u1pv1")
+metadata/_custom_type_script = "uid://0re6tuqk5egu"
+
+[node name="TransitionToMoving" type="Node" parent="Player/MoveMachine/Idle" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Moving")
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="PressingMoveKeys" type="Node" parent="Player/MoveMachine/Idle/TransitionToMoving"]
+script = ExtResource("5_fiv1m")
+actions = Array[StringName]([&"ui_left", &"ui_right", &"ui_up", &"ui_down"])
+rule_all_actions = false
+rule_only_invalid_when_all_released = true
+metadata/_custom_type_script = "uid://b66vkfnusc0f6"
+
+[node name="MoodConditionTimeout" type="Node" parent="Player/MoveMachine/Idle/TransitionToMoving"]
+script = ExtResource("7_0ebda")
+time_sec = 2.0
+validation_mode = 3
+trigger_sets_valid_to = false
+metadata/_custom_type_script = "uid://lth7jksuyveq"
+
+[node name="BeginRaging" type="Node" parent="Player/MoveMachine/Idle" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Raging")
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="RageTriggered" type="Node" parent="Player/MoveMachine/Idle/BeginRaging" node_paths=PackedStringArray("signal_target")]
+script = ExtResource("11_vrm4l")
+signal_target = NodePath("../../../..")
+signal_triggers = Array[String](["start_rage"])
+
+[node name="RecoverStamina" type="Node" parent="Player/MoveMachine/Idle"]
+script = ExtResource("8_y8xmq")
+stamina_per_sec = 15.0
+drain = false
+metadata/_custom_type_script = "uid://d17xu8yphmvpi"
+
+[node name="Moving" type="Node" parent="Player/MoveMachine"]
+script = ExtResource("3_u1pv1")
+metadata/_custom_type_script = "uid://0re6tuqk5egu"
+
+[node name="TransitionToIdle" type="Node" parent="Player/MoveMachine/Moving" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Idle")
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="NotPressingMoveKeys" type="Node" parent="Player/MoveMachine/Moving/TransitionToIdle"]
+script = ExtResource("5_fiv1m")
+actions = Array[StringName]([&"ui_left", &"ui_right", &"ui_up", &"ui_down"])
+invert_validity = true
+rule_all_actions = false
+rule_only_invalid_when_all_released = true
+metadata/_custom_type_script = "uid://b66vkfnusc0f6"
+
+[node name="TransitionToSprinting" type="Node" parent="Player/MoveMachine/Moving" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Sprinting")
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="IsSprinting" type="Node" parent="Player/MoveMachine/Moving/TransitionToSprinting" node_paths=PackedStringArray("property_target")]
+script = ExtResource("7_u1pv1")
+property_target = NodePath("../../../../SprintMachine")
+property = "mood"
+criteria = "Sprinting"
+is_callable = true
+metadata/_custom_type_script = "uid://b448uxn08i6o1"
+
+[node name="MoveUpdatePosition" type="Node" parent="Player/MoveMachine/Moving"]
+script = ExtResource("8_fiv1m")
+metadata/_custom_type_script = "uid://d17xu8yphmvpi"
+
+[node name="Sprinting" type="Node" parent="Player/MoveMachine"]
+script = ExtResource("3_u1pv1")
+metadata/_custom_type_script = "uid://0re6tuqk5egu"
+
+[node name="TransitionToMoving" type="Node" parent="Player/MoveMachine/Sprinting" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Moving")
+and_all_conditions = false
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="NotSprinting" type="Node" parent="Player/MoveMachine/Sprinting/TransitionToMoving" node_paths=PackedStringArray("property_target")]
+script = ExtResource("7_u1pv1")
+property_target = NodePath("../../../../SprintMachine")
+property = "mood"
+comparator = 5
+criteria = "Sprinting"
+is_callable = true
+metadata/_custom_type_script = "uid://b448uxn08i6o1"
+
+[node name="TransitionToIdle" type="Node" parent="Player/MoveMachine/Sprinting" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Idle")
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="NotPressingMoveKeys" type="Node" parent="Player/MoveMachine/Sprinting/TransitionToIdle"]
+script = ExtResource("5_fiv1m")
+actions = Array[StringName]([&"ui_left", &"ui_right", &"ui_up", &"ui_down"])
+invert_validity = true
+rule_all_actions = false
+rule_only_invalid_when_all_released = true
+metadata/_custom_type_script = "uid://b66vkfnusc0f6"
+
+[node name="SprintUpdatePosition" type="Node" parent="Player/MoveMachine/Sprinting"]
+script = ExtResource("8_fiv1m")
+speed_const = "sprint_speed"
+metadata/_custom_type_script = "uid://d17xu8yphmvpi"
+
+[node name="DrainStamina" type="Node" parent="Player/MoveMachine/Sprinting"]
+script = ExtResource("8_y8xmq")
+stamina_per_sec = 25.0
+metadata/_custom_type_script = "uid://d17xu8yphmvpi"
+
+[node name="Raging" type="Node" parent="Player/MoveMachine"]
+script = ExtResource("3_u1pv1")
+metadata/_custom_type_script = "uid://0re6tuqk5egu"
+
+[node name="BackToIdle" type="Node" parent="Player/MoveMachine/Raging" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Idle")
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="MoodConditionSignal" type="Node" parent="Player/MoveMachine/Raging/BackToIdle" node_paths=PackedStringArray("signal_target")]
+script = ExtResource("11_vrm4l")
+signal_target = NodePath("../../../..")
+signal_triggers = Array[String](["end_rage"])
+metadata/_custom_type_script = "uid://bapwnus850ael"
+
+[node name="SprintUpdatePosition" type="Node" parent="Player/MoveMachine/Raging"]
+script = ExtResource("8_fiv1m")
+speed_const = "sprint_speed"
+metadata/_custom_type_script = "uid://d17xu8yphmvpi"
+
+[node name="HandleRageTrigger" type="Node" parent="Player/MoveMachine/Raging" node_paths=PackedStringArray("modulate_target")]
+script = ExtResource("12_dymhy")
+modulate_target = NodePath("../../../Sprite2D")
+metadata/_custom_type_script = "uid://d17xu8yphmvpi"
+
+[node name="SprintMachine" type="Node" parent="Player" node_paths=PackedStringArray("initial_mood", "target")]
+script = ExtResource("2_an8x8")
+initial_mood = NodePath("NotSprinting")
+target = NodePath("..")
+metadata/_custom_type_script = "uid://dojhtlp310d5d"
+
+[node name="NotSprinting" type="Node" parent="Player/SprintMachine"]
+script = ExtResource("3_u1pv1")
+metadata/_custom_type_script = "uid://0re6tuqk5egu"
+
+[node name="ToSprinting" type="Node" parent="Player/SprintMachine/NotSprinting" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Sprinting")
+
+[node name="HasStamina" type="Node" parent="Player/SprintMachine/NotSprinting/ToSprinting" node_paths=PackedStringArray("property_target")]
+script = ExtResource("7_u1pv1")
+property_target = NodePath("../../../..")
+property = "current_stamina"
+comparator = 4
+criteria = 1
+
+[node name="PressingSprint" type="Node" parent="Player/SprintMachine/NotSprinting/ToSprinting"]
+script = ExtResource("5_fiv1m")
+actions = Array[StringName]([&"sprinting"])
+metadata/_custom_type_script = "uid://b66vkfnusc0f6"
+
+[node name="Sprinting" type="Node" parent="Player/SprintMachine"]
+script = ExtResource("3_u1pv1")
+metadata/_custom_type_script = "uid://0re6tuqk5egu"
+
+[node name="ToNotSprinting" type="Node" parent="Player/SprintMachine/Sprinting" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../NotSprinting")
+and_all_conditions = false
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="NoStamina" type="Node" parent="Player/SprintMachine/Sprinting/ToNotSprinting" node_paths=PackedStringArray("property_target")]
+script = ExtResource("7_u1pv1")
+property_target = NodePath("../../../..")
+property = "current_stamina"
+comparator = 2
+criteria = 0
+
+[node name="NotPressingSprint" type="Node" parent="Player/SprintMachine/Sprinting/ToNotSprinting"]
+script = ExtResource("5_fiv1m")
+actions = Array[StringName]([&"sprinting"])
+invert_validity = true
+metadata/_custom_type_script = "uid://b66vkfnusc0f6"
+
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("stamina_label", "move_machine_label", "sprint_machine_label")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("10_ogi84")
+stamina_label = NodePath("VBoxContainer/Stamina")
+move_machine_label = NodePath("VBoxContainer/MoveMachineState")
+sprint_machine_label = NodePath("VBoxContainer/SprintMachineState")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Stamina" type="Label" parent="UI/VBoxContainer"]
+layout_mode = 2
+
+[node name="MoveMachineState" type="Label" parent="UI/VBoxContainer"]
+layout_mode = 2
+
+[node name="SprintMachineState" type="Label" parent="UI/VBoxContainer"]
+layout_mode = 2
+
+[connection signal="stamina_changed" from="Player" to="UI" method="_on_player_stamina_changed"]
+[connection signal="mood_changed" from="Player/MoveMachine" to="UI" method="_on_move_machine_mood_changed"]
+[connection signal="mood_changed" from="Player/SprintMachine" to="UI" method="_on_sprint_machine_mood_changed"]

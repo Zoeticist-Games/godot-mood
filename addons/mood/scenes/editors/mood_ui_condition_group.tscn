@@ -1,0 +1,173 @@
+[gd_scene load_steps=6 format=3 uid="uid://b83qn3wnyfv2u"]
+
+[ext_resource type="Script" uid="uid://ciq7cpetuehvl" path="res://addons/mood/scenes/editors/mood_ui_condition_group.gd" id="1_saayx"]
+[ext_resource type="Texture2D" uid="uid://xicidjwtgaq0" path="res://addons/mood/icons/mood_trash.png" id="4_j5igr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5akar"]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5tpe3"]
+draw_center = false
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vrv5f"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
+draw_center = false
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[node name="MoodUiConditionGroup" type="VBoxContainer" node_paths=PackedStringArray("index_label", "condition_type_option", "go_to_node_button", "remove_button")]
+offset_right = 404.0
+offset_bottom = 133.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+script = ExtResource("1_saayx")
+index_label = NodePath("HeaderContainer/HBoxContainer/HBoxContainer/IndexLabel")
+condition_type_option = NodePath("ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer/ChildOption")
+go_to_node_button = NodePath("HeaderContainer/HBoxContainer/HBoxContainer/GoToNodeButton")
+remove_button = NodePath("HeaderContainer/HBoxContainer/RemoveGroup")
+
+[node name="HeaderContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_5akar")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HeaderContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HeaderContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="IndexLabel" type="Label" parent="HeaderContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.333333, 0.952941, 0.890196, 1)
+text = "-1"
+
+[node name="GoToNodeButton" type="Button" parent="HeaderContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "➡️"
+
+[node name="RemoveGroup" type="Button" parent="HeaderContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "Remove this condition group."
+icon = ExtResource("4_j5igr")
+icon_alignment = 1
+expand_icon = true
+
+[node name="ParamContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_5tpe3")
+
+[node name="AndAllConditions" type="CheckBox" parent="ParamContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "If this is checked, the condition group will evaluate to true if and only if ALL of the conditions evaluate to true. Otherwise, this group will evaluate to true if ANY of the conditions evaluate to true."
+text = "\"AND\" All Conditions"
+
+[node name="ConditionsContainer" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_vrv5f")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConditionsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="MarginContainer" type="CenterContainer" parent="ConditionsContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ConditionsContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="Label" type="Label" parent="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Add Condition:"
+
+[node name="AddGroupConditionButton" type="Button" parent="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+text = "Group"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="AddInputCondition" type="Button" parent="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Input"
+
+[node name="Button" type="Button" parent="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Timeout"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="AddPropCondition" type="Button" parent="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Property/Method"
+
+[node name="AddSignalCondition" type="Button" parent="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Signal"
+
+[node name="ChildOption" type="OptionButton" parent="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+selected = 0
+item_count = 7
+popup/item_0/text = "Add a Child Condition"
+popup/item_0/id = 0
+popup/item_1/text = "MoodConditionEntryWhitelist"
+popup/item_1/id = 1
+popup/item_2/text = "MoodConditionGroup"
+popup/item_2/id = 2
+popup/item_3/text = "MoodConditionInput"
+popup/item_3/id = 3
+popup/item_4/text = "MoodConditionProperty"
+popup/item_4/id = 4
+popup/item_5/text = "MoodConditionSignal"
+popup/item_5/id = 5
+popup/item_6/text = "MoodConditionTimeout"
+popup/item_6/id = 6
+
+[node name="Conditions" type="VBoxContainer" parent="ConditionsContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 4
+
+[connection signal="pressed" from="HeaderContainer/HBoxContainer/HBoxContainer/GoToNodeButton" to="." method="_on_go_to_node_button_pressed"]
+[connection signal="pressed" from="HeaderContainer/HBoxContainer/RemoveGroup" to="." method="_on_remove_group_pressed"]
+[connection signal="toggled" from="ParamContainer/AndAllConditions" to="." method="_on_all_of_toggled"]
+[connection signal="pressed" from="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer/AddGroupConditionButton" to="." method="_on_add_group_condition_button_pressed"]
+[connection signal="pressed" from="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AddPropCondition" to="." method="_on_add_condition_pressed"]
+[connection signal="pressed" from="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer/VBoxContainer/AddSignalCondition" to="." method="_on_add_signal_condition_pressed"]
+[connection signal="item_selected" from="ConditionsContainer/VBoxContainer/MarginContainer/HBoxContainer/ChildOption" to="." method="_on_child_option_item_selected"]
+[connection signal="child_exiting_tree" from="ConditionsContainer/VBoxContainer/Conditions" to="." method="_on_conditions_child_exiting_tree"]
