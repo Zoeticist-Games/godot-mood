@@ -33,6 +33,21 @@ The idea is extremely simple (to me, and hopefully you too):
 ## I'm still confused. Can you make it simpler?
 
 You can slap a `ClampToWorld` script node that calls `target.position = target.position.clamp(world_bounds.top_left, world_bounds.bottom_right)` and then just place that script node under any `Mood` which also updates the `target.position` -- that way, you don't have to explicitly clamp to world bounds everywhere position is updated, nor do you have to special-case anything for anywhere -- and that script won't ever be evaluated unless your `MoodMachine` is in the relevant `Mood`, so you have no worries about performance, either! 
+
+# Installation
+
+## Via Asset Library
+
+This will be filled out once it is approved for the Asset Library.
+
+## Via GitHub
+
+1. Go to the [Releases](https://github.com/Zoeticist-Games/godot-mood/releases) page.
+2. download the Source Code of the latest release.
+3. unzip it.
+4. ???
+5. profit!
+
 # How To Use
 
 Before beginning, read through the inline Editor documentation thoroughly. Also take a look at the `examples` folder for some basic examples.
