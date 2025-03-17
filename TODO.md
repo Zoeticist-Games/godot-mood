@@ -4,9 +4,6 @@ These are general plans for future improvements -- basically a worksheet for gui
 
 * add Graph-based UI tab for managing states for both Transition-mode and Mood-Evaluation-Mode.
 * Provide helper Debug nodes to track Mood changes, etc.
-* refactor the autoloads to not be autoloads, as currently nodes will break if the plugin is not enabled **because** the autoloads will not be in the Autoloads.
-	* e.g. `Recursion` should be in `mood.gd` as `const Recursion = ...` and references then can go to `Mood.Recursion` instead.
-	* this would be nice to be configurable directly.
 * finish writing unit + integration tests.
 * build benchmarks comparing this to some other common solutions and ensure performance is acceptable.
 * I think there might be some issues with the `template_script`s.

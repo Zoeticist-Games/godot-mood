@@ -102,6 +102,13 @@ static func get_icon_path(klass: String) -> String:
 	
 	return _icon_map.get(klass)
 
+static func global_class_exists(klass: String) -> bool:
+	for entry: Dictionary in ProjectSettings.get_global_class_list():
+		if String(entry["base"]) == klass:
+			return true
+
+	return false
+
 ## Load all local (amusingly enough called "global") classes into the [member _clas_tree]
 ## and populate the [member _icon_path_map].
 static func refresh_tree() -> void:
@@ -109,7 +116,7 @@ static func refresh_tree() -> void:
 	if _class_tree == null:
 		_class_tree = LocalTreeItem.new("Object")
 
-	for entry in ProjectSettings.get_global_class_list():
+	for entry: Dictionary in class_list:
 		if _class_tree.find_in_tree(entry["class"]): # already added!
 			continue
 

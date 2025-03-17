@@ -143,9 +143,21 @@ var _timer: SceneTreeTimer
 func _ready() -> void:
 	if invert_validity:
 		_valid = true
-	InputTracker.action_pressed.connect(_on_action_pressed)
-	InputTracker.action_echoed.connect(_on_action_echoed)
-	InputTracker.action_released.connect(_on_action_released)
+
+	if has_node(^"/root/InputTracker"): # singleton
+		var it_autoload := get_node(^"/root/InputTracker")
+		it_autoload.action_pressed.connect(_on_action_pressed)
+		it_autoload.action_echoed.connect(_on_action_echoed)
+		it_autoload.action_released.connect(_on_action_released)
+
+#endregion
+
+#region Overrides
+
+func _get_configuration_warnings() -> PackedStringArray:
+	if not has_node(^"/root/InputTracker"): # singleton
+		return ["You must enable the Mood Plugin for this Condition to work. Please do so then reload."]
+	return []
 
 #endregion
 

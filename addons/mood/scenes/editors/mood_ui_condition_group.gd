@@ -32,15 +32,19 @@ func _ready() -> void:
 	if not is_instance_valid(condition_type_option):
 		return
 
-	_condition_children = LocalClassFunctions.get_class_tree_for("MoodCondition").get_flat_data("path")
-	var i := 1
-	for child_class in _condition_children:
-		if child_class == "MoodCondition" or child_class == "MoodTransition":
-			continue
+	if not is_instance_valid(_condition_children):
+		condition_type_option.clear()
+		condition_type_option.add_item("Add a Child Condition", 0)
 
-		condition_type_option.add_item(child_class, i)
-		condition_type_option.set_item_metadata(i, _condition_children[child_class])
-		i += 1
+		_condition_children = Mood.LocalClassFunctions.get_class_tree_for("MoodCondition").get_flat_data("path")
+		var i := 1
+		for child_class in _condition_children:
+			if child_class == "MoodCondition" or child_class == "MoodTransition":
+				continue
+
+			condition_type_option.add_item(_normalize_condition_class_name(child_class), i)
+			condition_type_option.set_item_metadata(i, _condition_children[child_class])
+			i += 1
 
 #region Public Methods
 
@@ -75,6 +79,13 @@ func _connect_to_group() -> void:
 	for cond: MoodCondition in condition.get_conditions():
 		add_condition(cond)
 
+func _normalize_condition_class_name(klass: String) -> String:
+	var re := RegEx.new()
+	re.compile(r"(?<lc>[a-z])(?<uc>[A-Z])")
+	klass = klass.replace("MoodCondition", "")
+	klass = re.sub(klass, "$1 $2")
+	return klass
+
 #endregion
 
 #region Signal Hooks
@@ -103,11 +114,6 @@ func _on_child_option_item_selected(index: int) -> void:
 	var selected_type := condition_type_option.get_item_text(index)
 	var selected_script: String = condition_type_option.get_item_metadata(index)
 	var new_condition_klass: Variant = load(selected_script)
-
-	var re := RegEx.new()
-	re.compile(r"(?<lc>[a-z])(?<uc>[A-Z])")
-	selected_type = selected_type.replace("MoodCondition", "")
-	selected_type = re.sub(selected_type, "$1 $2")
 
 	_create_condition(selected_type, new_condition_klass)
 	

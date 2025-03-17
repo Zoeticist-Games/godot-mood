@@ -16,7 +16,7 @@ class_name MoodChild extends MoodMachineChild
 var mood: Mood:
 	get():
 		if _mood == null:
-			self.mood = Recursion.find_parent_recursively(self, Mood)
+			self.mood = Mood.Recursion.find_parent_recursively(self, Mood)
 		return _mood
 	set(value):
 		if _mood == value:
