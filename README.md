@@ -48,6 +48,12 @@ This will be filled out once it is approved for the Asset Library.
 4. ???
 5. profit!
 
+## Installation Notes and Warnings
+
+**Warning** Currently this repo has some tests in the `tests` folder which rely on [Gut](https://github.com/bitwes/Gut), a testing framework for GDScript. You will note, however, that it is not present in GitHub. This is intentional -- I do not want to require that people who want to use my addon are required to install other addons.
+
+If you would like to run tests (or silence warnings), you can always install `Gut`. Alternately, you can remove the `tests` folder after download.
+
 # How To Use
 
 Before beginning, read through the inline Editor documentation thoroughly. Also take a look at the `examples` folder for some basic examples.
