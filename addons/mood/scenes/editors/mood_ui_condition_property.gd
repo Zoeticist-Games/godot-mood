@@ -253,7 +253,7 @@ func _on_node_edit_confirmed(node_path: NodePath) -> void:
 			var local_node_script = target_node.get_script()
 			var icon_path
 			if local_node_script:
-				icon_path = LocalClassFunctions.get_icon_path(local_node_script.get_global_name())
+				icon_path = Mood.LocalClassFunctions.get_icon_path(local_node_script.get_global_name())
 
 			if icon_path:
 				%SelectedNodeIcon.texture = load(icon_path) as Texture2D

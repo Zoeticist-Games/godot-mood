@@ -3,7 +3,7 @@ extends EditorScript
 
 # this will fail if the plugin isn't enabled.
 func _run():
-	var class_paths := LocalClassFunctions.get_class_tree_for("MoodCondition").get_flat_data("path")
+	var class_paths := Mood.LocalClassFunctions.get_class_tree_for("MoodCondition").get_flat_data("path")
 	Mood.Editors.registered_editors = {} as Dictionary[String, PackedScene]
 	for klass: String in class_paths:
 		var script_path: String = class_paths[klass]

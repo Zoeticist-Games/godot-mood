@@ -260,7 +260,7 @@ func _ready() -> void:
 			else:
 				(node as Mood).disable()
 
-	Recursion.recurse(self, "_mood_machine_ready")
+	Mood.Recursion.recurse(self, "_mood_machine_ready")
 
 ## [member initial_mood] and [member target] are revertable as they have well-defined
 ## defaults: the first immediate [Mood] child for the former, and the parent of

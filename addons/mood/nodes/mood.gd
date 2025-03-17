@@ -20,7 +20,8 @@ const TransitionEditor = preload("res://addons/mood/scenes/editors/mood_ui_trans
 # because the plugin "Mood" is also the node "Mood", we can put a bunch of constants here
 # to use as namespacing. it clutters up the responsibility of the node a bit; just go with it.
 
-#const Recursion := preload("res://addons/mood/autoloads/recursion.gd")
+const LocalClassFunctions := preload("res://addons/mood/autoloads/local_class_functions.gd")
+const Recursion := preload("res://addons/mood/autoloads/recursion.gd")
 
 ## A namespace for references to UI Editors for when the plugin is enabled.
 class Editors: # for namespacing purposes
@@ -202,10 +203,10 @@ func is_current_mood() -> bool:
 ## * _input[br]
 ## * _unhandled_input[br]
 func enable() -> void:
-	Recursion.recurse(self, "set_process", true)
-	Recursion.recurse(self, "set_physics_process", true)
-	Recursion.recurse(self, "set_process_input", true)
-	Recursion.recurse(self, "set_process_unhandled_input", true)
+	Mood.Recursion.recurse(self, "set_process", true)
+	Mood.Recursion.recurse(self, "set_physics_process", true)
+	Mood.Recursion.recurse(self, "set_process_input", true)
+	Mood.Recursion.recurse(self, "set_process_unhandled_input", true)
 
 ## Turn off processing for oneself and one's children. "Processing" refers to:[br]
 ## [br]
@@ -214,10 +215,10 @@ func enable() -> void:
 ## * _input[br]
 ## * _unhandled_input[br]
 func disable() -> void:
-	Recursion.recurse(self, "set_process", false)
-	Recursion.recurse(self, "set_physics_process", false)
-	Recursion.recurse(self, "set_process_input", false)
-	Recursion.recurse(self, "set_process_unhandled_input", false)
+	Mood.Recursion.recurse(self, "set_process", false)
+	Mood.Recursion.recurse(self, "set_physics_process", false)
+	Mood.Recursion.recurse(self, "set_process_input", false)
+	Mood.Recursion.recurse(self, "set_process_unhandled_input", false)
 
 #endregion
 

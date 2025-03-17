@@ -15,7 +15,7 @@ class_name MoodMachineChild extends Node
 var machine: MoodMachine:
 	get():
 		if _machine == null:
-			machine = Recursion.find_parent_recursively(self, MoodMachine)
+			machine = Mood.Recursion.find_parent_recursively(self, MoodMachine)
 		return _machine
 	set(val):
 		if _machine == val:
