@@ -26,6 +26,7 @@ func _ready() -> void:
 
 func _refresh_items() -> void:
 	item_list.clear()
+	InputMap.load_from_project_settings() # reload to pick custom actions.
 	
 	var filter: String = ""
 	if is_instance_valid(action_search):
