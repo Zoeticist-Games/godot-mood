@@ -159,6 +159,10 @@ func _get_configuration_warnings() -> PackedStringArray:
 		return ["You must enable the Mood Plugin for this Condition to work. Please do so then reload."]
 	return []
 
+## Used by the Plugin to skip fields.
+func should_skip_property(field: String) -> bool:
+	return field == "actions"
+
 #endregion
 
 #region Public Methods
