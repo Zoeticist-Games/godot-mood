@@ -30,7 +30,6 @@ const ActionSelectorScene: PackedScene = preload("res://addons/mood/scenes/edito
 #region action Hooks
 
 func _on_popup_button_pressed() -> void:
-	print("pressed")
 	if _action_selector:
 		_action_selector.queue_free()
 
@@ -41,7 +40,6 @@ func _on_popup_button_pressed() -> void:
 	_action_selector.popup_exclusive(EditorInterface.get_editor_main_screen())
 
 func _update_action_list(actions: Array[StringName]) -> void:
-	print("updating")
 	condition.actions = actions
 	condition.notify_property_list_changed()
 	_action_selector.queue_free()

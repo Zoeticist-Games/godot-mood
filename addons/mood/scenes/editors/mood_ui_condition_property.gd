@@ -66,6 +66,8 @@ var _properties_by_name: Dictionary = {}
 var _methods_by_name: Dictionary = {}
 var _method_selector: AcceptDialog
 var _valid_node_types := [] as Array[StringName]
+var _enum_class: String
+var _enum_constant: String
 
 #endregion
 
@@ -85,12 +87,20 @@ func _refresh_property_cache() -> void:
 			_methods_by_name[meth["name"]] = meth
 
 func _on_method_selected(method: String) -> void:
+	condition.criteria = null
+	condition.is_node_path = false
+	condition.node_path_root = null
+
 	condition.property = method
 	condition.is_callable = method != ""
 	_update_property_editor()
 
 ## and we use the property to figure stuff out.
 func _on_prop_selected(property_path: NodePath) -> void:
+	condition.criteria = null
+	condition.is_node_path = false
+	condition.node_path_root = null
+
 	condition.is_callable = false
 	if property_path.is_empty():
 		condition.property = ""
@@ -135,31 +145,76 @@ func _update_property_editor() -> void:
 		TYPE_OBJECT:
 			_valid_node_types = [prop["class_name"]]
 			current_editor = %NodeEdit
-			_on_node_edit_confirmed(condition.criteria)
+			if condition.criteria != null:
+				_on_node_edit_confirmed(condition.criteria)
 		TYPE_NODE_PATH:
 			_valid_node_types = prop["hint_string"].split(",")
 			current_editor = %NodeEdit
-			_on_node_edit_confirmed(condition.criteria)
+			if condition.criteria != null:
+				_on_node_edit_confirmed(condition.criteria)
 		TYPE_BOOL:
 			current_editor = %BoolEdit
-			current_editor.button_pressed = !!condition.criteria
+			if condition.criteria != null:
+				match typeof(condition.criteria):
+					TYPE_BOOL:
+						current_editor.button_pressed = condition.criteria
+					_:
+						current_editor.button_pressed = false
 		TYPE_FLOAT, TYPE_INT:
-			current_editor = %NumberEdit
-			if condition.criteria:
-				current_editor.text = "%s" % condition.criteria
+			if prop["usage"] & PROPERTY_USAGE_CLASS_IS_ENUM:
+				_enum_class = prop["class_name"].split(".")[0]
+				_enum_constant = prop["class_name"].split(".")[1]
+				current_editor = enum_edit
+				enum_edit.clear()
+				var idx := 0
+				var selected := 0
+
+				var enum_options: PackedStringArray
+				if prop["hint_string"] != null and prop["hint_string"] != "": # values in hint string
+					enum_options = prop["hint_string"].split(",")
+				else: # this is true for built-in enums.
+					enum_options = ClassDB.class_get_enum_constants(StringName(_enum_class), StringName(_enum_constant))
+
+				for enum_val: String in enum_options:
+					if ":" in enum_val: # when coming from hint string
+						var val_parts := enum_val.split(":", true, 2)
+						enum_val = val_parts[0]
+						idx = val_parts[1].to_int()
+
+					enum_edit.add_item(enum_val, idx)
+
+					if condition.criteria != null:
+						match typeof(condition.criteria):
+							TYPE_INT: # enum value
+								if condition.criteria == idx:
+									selected = idx
+							TYPE_STRING:
+								if condition.criteria == enum_val:
+									selected = idx
+					idx += 1
+				enum_edit.select(selected)
 			else:
-				condition.criteria = 0
-				current_editor.text = "0"
+				current_editor = %NumberEdit
+				if condition.criteria != null:
+					match typeof(condition.criteria):
+						TYPE_FLOAT, TYPE_INT:
+							current_editor.text = "%s" % condition.criteria
+						_:
+							condition.criteria = 0
+							current_editor.text = "0"
+				else:
+					condition.criteria = 0
+					current_editor.text = "0"
 		TYPE_STRING, TYPE_STRING_NAME:
 			match prop["hint"]:
 				PROPERTY_HINT_ENUM, PROPERTY_HINT_ENUM_SUGGESTION:
 					enum_edit.clear()
 					var idx := 0
-					var selected := -1
+					var selected := 0
 					# @TODO handle special value assignments
 					for enum_val in prop["hint_string"].split(","):
 						enum_edit.add_item(enum_val, idx)
-						if condition.criteria == enum_val:
+						if condition.criteria != null and String(condition.criteria) == String(enum_val):
 							selected = idx
 						idx += 1
 
@@ -167,8 +222,10 @@ func _update_property_editor() -> void:
 					enum_edit.select(selected)
 				_:
 					current_editor = %StringEdit
-					if condition.criteria:
-						current_editor.text = condition.criteria
+					if condition.criteria != null:
+						match typeof(condition.criteria):
+							TYPE_STRING, TYPE_STRING_NAME:
+								current_editor.text = String(condition.criteria)
 					else:
 						current_editor.text = ""
 		_:
@@ -176,6 +233,8 @@ func _update_property_editor() -> void:
 
 	if current_editor:
 		current_editor.show()
+		if current_editor is TextEdit or current_editor is LineEdit:
+			current_editor.grab_focus()
 
 #endregion
 
@@ -200,12 +259,9 @@ func _on_property_selector_button_pressed() -> void:
 	EditorInterface.popup_property_selector(condition.property_target, _on_prop_selected, VALID_TYPES, condition.property)
 
 func _on_method_selector_pressed() -> void:
-	if _method_selector:
-		_method_selector.queue_free()
-
 	_method_selector = METHOD_SELECTOR_SCENE.instantiate()
 	_method_selector.target_node = condition.property_target
-	_method_selector.select_item_by_text(condition.property)
+	_method_selector.selected_item = StringName(condition.property)
 	_method_selector.on_method_selected.connect(_on_method_selected)
 	_method_selector.popup_exclusive(EditorInterface.get_editor_main_screen())
 
@@ -221,7 +277,7 @@ func _on_string_edit_text_changed(new_text: String) -> void:
 
 func _on_enum_edit_item_selected(index: int) -> void:
 	if condition:
-		condition.criteria = enum_edit.get_item_text(index)
+		condition.criteria = index
 
 func _on_bool_edit_toggled(toggled_on: bool) -> void:
 	if condition:

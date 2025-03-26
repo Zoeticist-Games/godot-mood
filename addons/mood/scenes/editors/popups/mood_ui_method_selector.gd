@@ -11,7 +11,10 @@ extends ConfirmationDialog
 
 		target_node = val
 		_refresh_items()
-
+@export var selected_item: StringName:
+	set(val):
+		selected_item = val
+		_refresh_items()
 
 const VALID_TYPES = [
 	TYPE_STRING, TYPE_STRING_NAME, TYPE_INT, TYPE_FLOAT, TYPE_BOOL
@@ -51,24 +54,6 @@ func _on_custom_action(action: StringName) -> void:
 
 #endregion
 
-#region Public Methods
-
-func select_item_by_text(text: String) -> void:
-	if !is_instance_valid(target_node):
-		return
-
-	var idx := 0
-	for sig in target_node.get_method_list():
-		if len(sig["args"]) - len(sig["default_args"]) != 0:
-			continue
-
-		if sig["name"] == text:
-			item_list.select(idx)
-			break
-
-		idx += 1
-
-#endregion
 
 #region Private Methods
 
@@ -84,6 +69,7 @@ func _refresh_items() -> void:
 	methods.sort_custom(func(l, r): return l["name"] < r["name"])
 	
 	var filter = %MethodSearch.text
+	var added_selected := false
 
 	for meth in methods:
 		if len(meth["args"]) - len(meth["default_args"]) > 0:
@@ -95,7 +81,16 @@ func _refresh_items() -> void:
 		if len(filter) > 0 and not meth["name"].begins_with(filter):
 			continue
 
-		item_list.add_item(meth["name"])
+		var idx := item_list.add_item(meth["name"])
+		if meth["name"] == selected_item:
+			item_list.select(idx)
+			added_selected = true
+
+	# ensure presence of previously selected item even if filter would reject it.
+	if selected_item != null and not added_selected:
+		var idx := item_list.add_item(selected_item)
+		item_list.select(idx)
+		item_list.sort_items_by_text()
 
 #endregion
 
