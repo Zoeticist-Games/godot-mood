@@ -29,8 +29,20 @@ signal stamina_empty
 signal start_rage
 signal end_rage
 
+var _rage_pre_exit := false
+var _timer_started := false
+
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_text_indent"): # tab key
+	if event.is_action_pressed("ui_text_indent") and not _timer_started: # tab key
 		start_rage.emit()
+		_timer_started = true
 		await get_tree().create_timer(rage_time).timeout
-		end_rage.emit()
+		_timer_started = false
+		if _rage_pre_exit:
+			_rage_pre_exit = false
+		else:
+			end_rage.emit()
+
+func _on_raging_mood_exited(_next_mood: Mood) -> void:
+	_timer_started = false
+	_rage_pre_exit = true

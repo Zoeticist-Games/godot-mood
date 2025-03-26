@@ -34,6 +34,15 @@ var mood: Mood:
 		
 		_mood = value
 
+		if has_method("_enter_mood"):
+			var em := Callable(self, "_enter_mood")
+			if not _mood.mood_entered.is_connected(em):
+				_mood.mood_entered.connect(em)
+		if has_method("_exit_mood"):
+			var em := Callable(self, "_exit_mood")
+			if not _mood.mood_exited.is_connected(em):
+				_mood.mood_exited.connect(em)
+
 		# assign our processing status to match the mood's.
 		set_process(_mood.is_processing())
 		set_physics_process(_mood.is_physics_processing())
