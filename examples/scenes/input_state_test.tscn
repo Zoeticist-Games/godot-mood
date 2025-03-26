@@ -52,9 +52,8 @@ metadata/_custom_type_script = "uid://corvum2mgs3oh"
 
 [node name="PressingMoveKeys" type="Node" parent="Player/MoveMachine/Idle/TransitionToMoving"]
 script = ExtResource("5_fiv1m")
-actions = Array[StringName]([&"ui_cancel", &"ui_left", &"ui_right", &"ui_up"])
-rule_all_actions = false
-rule_only_invalid_when_all_released = true
+actions = Array[StringName]([&"ui_down", &"ui_left", &"ui_right", &"ui_up"])
+trigger_echo_counts_as_press = null
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
 
 [node name="MoodConditionTimeout" type="Node" parent="Player/MoveMachine/Idle/TransitionToMoving"]
@@ -73,6 +72,7 @@ metadata/_custom_type_script = "uid://corvum2mgs3oh"
 script = ExtResource("11_vrm4l")
 signal_target = NodePath("../../../..")
 signal_triggers = Array[String](["start_rage"])
+trigger_consider_only_if_current = true
 
 [node name="RecoverStamina" type="Node" parent="Player/MoveMachine/Idle"]
 script = ExtResource("8_y8xmq")
@@ -93,8 +93,11 @@ metadata/_custom_type_script = "uid://corvum2mgs3oh"
 script = ExtResource("5_fiv1m")
 actions = Array[StringName]([&"ui_left", &"ui_right", &"ui_up", &"ui_down"])
 invert_validity = true
-rule_all_actions = false
-rule_only_invalid_when_all_released = true
+trigger_echo_counts_as_press = null
+clear_on_mood_exit = true
+timeout_timeout_seconds = null
+timeout_reset_on_action_echo = null
+timeout_clear_on_action_release = null
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
 
 [node name="TransitionToSprinting" type="Node" parent="Player/MoveMachine/Moving" node_paths=PackedStringArray("to_mood")]
@@ -113,6 +116,17 @@ metadata/_custom_type_script = "uid://b448uxn08i6o1"
 [node name="MoveUpdatePosition" type="Node" parent="Player/MoveMachine/Moving"]
 script = ExtResource("8_fiv1m")
 metadata/_custom_type_script = "uid://d17xu8yphmvpi"
+
+[node name="BeginRaging2" type="Node" parent="Player/MoveMachine/Moving" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Raging")
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="RageTriggered" type="Node" parent="Player/MoveMachine/Moving/BeginRaging2" node_paths=PackedStringArray("signal_target")]
+script = ExtResource("11_vrm4l")
+signal_target = NodePath("../../../..")
+signal_triggers = Array[String](["start_rage"])
+trigger_consider_only_if_current = true
 
 [node name="Sprinting" type="Node" parent="Player/MoveMachine"]
 script = ExtResource("3_u1pv1")
@@ -142,8 +156,11 @@ metadata/_custom_type_script = "uid://corvum2mgs3oh"
 script = ExtResource("5_fiv1m")
 actions = Array[StringName]([&"ui_left", &"ui_right", &"ui_up", &"ui_down"])
 invert_validity = true
-rule_all_actions = false
-rule_only_invalid_when_all_released = true
+trigger_echo_counts_as_press = null
+trigger_require_all_actions = true
+timeout_timeout_seconds = null
+timeout_reset_on_action_echo = null
+timeout_clear_on_action_release = null
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
 
 [node name="SprintUpdatePosition" type="Node" parent="Player/MoveMachine/Sprinting"]
@@ -163,13 +180,28 @@ metadata/_custom_type_script = "uid://0re6tuqk5egu"
 [node name="BackToIdle" type="Node" parent="Player/MoveMachine/Raging" node_paths=PackedStringArray("to_mood")]
 script = ExtResource("4_y8xmq")
 to_mood = NodePath("../../Idle")
+and_all_conditions = false
 metadata/_custom_type_script = "uid://corvum2mgs3oh"
 
-[node name="MoodConditionSignal" type="Node" parent="Player/MoveMachine/Raging/BackToIdle" node_paths=PackedStringArray("signal_target")]
+[node name="EndRageSignal" type="Node" parent="Player/MoveMachine/Raging/BackToIdle" node_paths=PackedStringArray("signal_target")]
 script = ExtResource("11_vrm4l")
 signal_target = NodePath("../../../..")
 signal_triggers = Array[String](["end_rage"])
 metadata/_custom_type_script = "uid://bapwnus850ael"
+
+[node name="Press To End" type="Node" parent="Player/MoveMachine/Raging/BackToIdle"]
+script = ExtResource("5_fiv1m")
+actions = Array[StringName]([&"ui_text_indent"])
+trigger_consider_only_if_current = true
+trigger_echo_counts_as_press = true
+trigger_require_all_actions = true
+clear_on_mood_enter = true
+clear_on_mood_exit = true
+clear_on_action_release = null
+clear_on_release_only_when_all_are_released = null
+timeout_timeout_seconds = null
+timeout_reset_on_action_echo = null
+timeout_clear_on_action_release = null
 
 [node name="SprintUpdatePosition" type="Node" parent="Player/MoveMachine/Raging"]
 script = ExtResource("8_fiv1m")
@@ -205,6 +237,17 @@ criteria = 1
 [node name="PressingSprint" type="Node" parent="Player/SprintMachine/NotSprinting/ToSprinting"]
 script = ExtResource("5_fiv1m")
 actions = Array[StringName]([&"sprinting"])
+trigger_consider_only_if_current = null
+trigger_echo_counts_as_press = null
+trigger_require_all_actions = null
+clear_on_mood_enter = null
+clear_on_mood_exit = null
+clear_on_action_release = null
+clear_on_timeout = null
+clear_on_release_only_when_all_are_released = null
+timeout_timeout_seconds = null
+timeout_reset_on_action_echo = null
+timeout_clear_on_action_release = null
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
 
 [node name="Sprinting" type="Node" parent="Player/SprintMachine"]
@@ -227,7 +270,17 @@ criteria = 0
 [node name="NotPressingSprint" type="Node" parent="Player/SprintMachine/Sprinting/ToNotSprinting"]
 script = ExtResource("5_fiv1m")
 actions = Array[StringName]([&"sprinting"])
-invert_validity = true
+trigger_consider_only_if_current = null
+trigger_echo_counts_as_press = null
+trigger_require_all_actions = null
+clear_on_mood_enter = null
+clear_on_mood_exit = null
+clear_on_action_release = null
+clear_on_timeout = null
+clear_on_release_only_when_all_are_released = null
+timeout_timeout_seconds = null
+timeout_reset_on_action_echo = null
+timeout_clear_on_action_release = null
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
 
 [node name="UI" type="Control" parent="." node_paths=PackedStringArray("stamina_label", "move_machine_label", "sprint_machine_label")]
@@ -256,4 +309,5 @@ layout_mode = 2
 
 [connection signal="stamina_changed" from="Player" to="UI" method="_on_player_stamina_changed"]
 [connection signal="mood_changed" from="Player/MoveMachine" to="UI" method="_on_move_machine_mood_changed"]
+[connection signal="mood_exited" from="Player/MoveMachine/Raging" to="Player" method="_on_raging_mood_exited"]
 [connection signal="mood_changed" from="Player/SprintMachine" to="UI" method="_on_sprint_machine_mood_changed"]
