@@ -76,6 +76,7 @@ func _on_item_list_multi_selected(index: int, selected: bool) -> void:
 func _on_add_action_button_pressed() -> void:
 	if is_instance_valid(custom_action_input):
 		var sn_action := StringName(custom_action_input.text)
-		selected_items.append(sn_action)
-		_refresh_items()
-		custom_action_input.text = ""
+		if sn_action not in selected_items:
+			selected_items.append(sn_action)
+			_refresh_items()
+			custom_action_input.text = ""
