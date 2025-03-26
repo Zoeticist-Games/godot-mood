@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bflpa67sbry4n"]
+[gd_scene load_steps=14 format=3 uid="uid://bflpa67sbry4n"]
 
 [ext_resource type="Script" uid="uid://cexmmjes4fv" path="res://examples/scenes/player.gd" id="1_an8x8"]
 [ext_resource type="Texture2D" uid="uid://b3vsw8i10o171" path="res://icon.svg" id="1_bom16"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://0re6tuqk5egu" path="res://addons/mood/nodes/mood.gd" id="3_u1pv1"]
 [ext_resource type="Script" uid="uid://corvum2mgs3oh" path="res://addons/mood/nodes/mood_transition.gd" id="4_y8xmq"]
 [ext_resource type="Script" uid="uid://b66vkfnusc0f6" path="res://addons/mood/nodes/conditions/mood_condition_input.gd" id="5_fiv1m"]
-[ext_resource type="Script" uid="uid://lth7jksuyveq" path="res://addons/mood/nodes/conditions/mood_condition_timeout.gd" id="7_0ebda"]
 [ext_resource type="Script" uid="uid://b448uxn08i6o1" path="res://addons/mood/nodes/conditions/mood_condition_property.gd" id="7_u1pv1"]
 [ext_resource type="Script" uid="uid://6fcf7wp86vg3" path="res://examples/scenes/move_target.gd" id="8_fiv1m"]
 [ext_resource type="Script" uid="uid://qrxr1kr7m25j" path="res://examples/scenes/drain_stamina.gd" id="8_y8xmq"]
@@ -53,15 +52,7 @@ metadata/_custom_type_script = "uid://corvum2mgs3oh"
 [node name="PressingMoveKeys" type="Node" parent="Player/MoveMachine/Idle/TransitionToMoving"]
 script = ExtResource("5_fiv1m")
 actions = Array[StringName]([&"ui_down", &"ui_left", &"ui_right", &"ui_up"])
-trigger_echo_counts_as_press = null
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
-
-[node name="MoodConditionTimeout" type="Node" parent="Player/MoveMachine/Idle/TransitionToMoving"]
-script = ExtResource("7_0ebda")
-time_sec = 2.0
-validation_mode = 3
-trigger_sets_valid_to = false
-metadata/_custom_type_script = "uid://lth7jksuyveq"
 
 [node name="BeginRaging" type="Node" parent="Player/MoveMachine/Idle" node_paths=PackedStringArray("to_mood")]
 script = ExtResource("4_y8xmq")
@@ -93,11 +84,7 @@ metadata/_custom_type_script = "uid://corvum2mgs3oh"
 script = ExtResource("5_fiv1m")
 actions = Array[StringName]([&"ui_left", &"ui_right", &"ui_up", &"ui_down"])
 invert_validity = true
-trigger_echo_counts_as_press = null
 clear_on_mood_exit = true
-timeout_timeout_seconds = null
-timeout_reset_on_action_echo = null
-timeout_clear_on_action_release = null
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
 
 [node name="TransitionToSprinting" type="Node" parent="Player/MoveMachine/Moving" node_paths=PackedStringArray("to_mood")]
@@ -132,10 +119,20 @@ trigger_consider_only_if_current = true
 script = ExtResource("3_u1pv1")
 metadata/_custom_type_script = "uid://0re6tuqk5egu"
 
+[node name="TransitionToIdle" type="Node" parent="Player/MoveMachine/Sprinting" node_paths=PackedStringArray("to_mood")]
+script = ExtResource("4_y8xmq")
+to_mood = NodePath("../../Idle")
+metadata/_custom_type_script = "uid://corvum2mgs3oh"
+
+[node name="NotPressingMoveKeys" type="Node" parent="Player/MoveMachine/Sprinting/TransitionToIdle"]
+script = ExtResource("5_fiv1m")
+actions = Array[StringName]([&"ui_left", &"ui_right", &"ui_up", &"ui_down"])
+invert_validity = true
+metadata/_custom_type_script = "uid://b66vkfnusc0f6"
+
 [node name="TransitionToMoving" type="Node" parent="Player/MoveMachine/Sprinting" node_paths=PackedStringArray("to_mood")]
 script = ExtResource("4_y8xmq")
 to_mood = NodePath("../../Moving")
-and_all_conditions = false
 metadata/_custom_type_script = "uid://corvum2mgs3oh"
 
 [node name="NotSprinting" type="Node" parent="Player/MoveMachine/Sprinting/TransitionToMoving" node_paths=PackedStringArray("property_target")]
@@ -146,22 +143,6 @@ comparator = 5
 criteria = "Sprinting"
 is_callable = true
 metadata/_custom_type_script = "uid://b448uxn08i6o1"
-
-[node name="TransitionToIdle" type="Node" parent="Player/MoveMachine/Sprinting" node_paths=PackedStringArray("to_mood")]
-script = ExtResource("4_y8xmq")
-to_mood = NodePath("../../Idle")
-metadata/_custom_type_script = "uid://corvum2mgs3oh"
-
-[node name="NotPressingMoveKeys" type="Node" parent="Player/MoveMachine/Sprinting/TransitionToIdle"]
-script = ExtResource("5_fiv1m")
-actions = Array[StringName]([&"ui_left", &"ui_right", &"ui_up", &"ui_down"])
-invert_validity = true
-trigger_echo_counts_as_press = null
-trigger_require_all_actions = true
-timeout_timeout_seconds = null
-timeout_reset_on_action_echo = null
-timeout_clear_on_action_release = null
-metadata/_custom_type_script = "uid://b66vkfnusc0f6"
 
 [node name="SprintUpdatePosition" type="Node" parent="Player/MoveMachine/Sprinting"]
 script = ExtResource("8_fiv1m")
@@ -197,11 +178,6 @@ trigger_echo_counts_as_press = true
 trigger_require_all_actions = true
 clear_on_mood_enter = true
 clear_on_mood_exit = true
-clear_on_action_release = null
-clear_on_release_only_when_all_are_released = null
-timeout_timeout_seconds = null
-timeout_reset_on_action_echo = null
-timeout_clear_on_action_release = null
 
 [node name="SprintUpdatePosition" type="Node" parent="Player/MoveMachine/Raging"]
 script = ExtResource("8_fiv1m")
@@ -237,17 +213,6 @@ criteria = 1
 [node name="PressingSprint" type="Node" parent="Player/SprintMachine/NotSprinting/ToSprinting"]
 script = ExtResource("5_fiv1m")
 actions = Array[StringName]([&"sprinting"])
-trigger_consider_only_if_current = null
-trigger_echo_counts_as_press = null
-trigger_require_all_actions = null
-clear_on_mood_enter = null
-clear_on_mood_exit = null
-clear_on_action_release = null
-clear_on_timeout = null
-clear_on_release_only_when_all_are_released = null
-timeout_timeout_seconds = null
-timeout_reset_on_action_echo = null
-timeout_clear_on_action_release = null
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
 
 [node name="Sprinting" type="Node" parent="Player/SprintMachine"]
@@ -270,17 +235,7 @@ criteria = 0
 [node name="NotPressingSprint" type="Node" parent="Player/SprintMachine/Sprinting/ToNotSprinting"]
 script = ExtResource("5_fiv1m")
 actions = Array[StringName]([&"sprinting"])
-trigger_consider_only_if_current = null
-trigger_echo_counts_as_press = null
-trigger_require_all_actions = null
-clear_on_mood_enter = null
-clear_on_mood_exit = null
-clear_on_action_release = null
-clear_on_timeout = null
-clear_on_release_only_when_all_are_released = null
-timeout_timeout_seconds = null
-timeout_reset_on_action_echo = null
-timeout_clear_on_action_release = null
+invert_validity = true
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
 
 [node name="UI" type="Control" parent="." node_paths=PackedStringArray("stamina_label", "move_machine_label", "sprint_machine_label")]
@@ -300,6 +255,7 @@ offset_bottom = 40.0
 
 [node name="Stamina" type="Label" parent="UI/VBoxContainer"]
 layout_mode = 2
+text = "100"
 
 [node name="MoveMachineState" type="Label" parent="UI/VBoxContainer"]
 layout_mode = 2
