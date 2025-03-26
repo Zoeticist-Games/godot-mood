@@ -52,7 +52,7 @@ metadata/_custom_type_script = "uid://corvum2mgs3oh"
 
 [node name="PressingMoveKeys" type="Node" parent="Player/MoveMachine/Idle/TransitionToMoving"]
 script = ExtResource("5_fiv1m")
-actions = Array[StringName]([&"ui_left", &"ui_right", &"ui_up", &"ui_down"])
+actions = Array[StringName]([&"ui_cancel", &"ui_left", &"ui_right", &"ui_up"])
 rule_all_actions = false
 rule_only_invalid_when_all_released = true
 metadata/_custom_type_script = "uid://b66vkfnusc0f6"
