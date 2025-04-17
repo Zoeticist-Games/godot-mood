@@ -68,6 +68,9 @@ func _ready() -> void:
 	if not is_instance_valid(mood):
 		return
 
+	if machine.evaluate_moods_directly and not is_instance_valid(mood.root_condition):
+		mood.root_condition = self
+
 	if has_method("_enter_mood"):
 		var em := Callable(self, "_enter_mood")
 		if not mood.mood_entered.is_connected(em):
