@@ -70,12 +70,13 @@ func _on_trigger_sets_valid_to_pressed() -> void:
 	condition.trigger_sets_valid_to = trigger_valid_button.button_pressed
 
 func _on_option_button_item_selected(index: int) -> void:
-	match index:
-		0:
-			condition.validation_mode = MoodConditionTimeout.ValidationMode.VALID_ON_ENTRY
-		1:
-			condition.validation_mode = MoodConditionTimeout.ValidationMode.VALID_ON_EXIT
-		2:
-			condition.validation_mode = MoodConditionTimeout.ValidationMode.VALID_ON_ENTRY_UNBOUND
-		3:
-			condition.validation_mode = MoodConditionTimeout.ValidationMode.VALID_ON_EXIT_UNBOUND
+	pass
+	#match index:
+		#0:
+			#condition.validation_mode = MoodConditionTimeout.ValidationMode.VALID_ON_ENTRY
+		#1:
+			#condition.validation_mode = MoodConditionTimeout.ValidationMode.VALID_ON_EXIT
+		#2:
+			#condition.validation_mode = MoodConditionTimeout.ValidationMode.VALID_ON_ENTRY_UNBOUND
+		#3:
+			#condition.validation_mode = MoodConditionTimeout.ValidationMode.VALID_ON_EXIT_UNBOUND

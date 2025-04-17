@@ -16,6 +16,8 @@ extends VBoxContainer
 			return
 
 		condition = val
+		if is_instance_valid(go_to_node_button):
+			go_to_node_button.visible = condition.is_inside_tree()
 		_connect_to_group()
 
 #endregion
@@ -64,7 +66,8 @@ func _create_condition(name_prefix: String, klass: Variant) -> void:
 	var child_condition = klass.new()
 	child_condition.name = "%s Condition %s" % [name_prefix, len(condition.get_conditions()) + 1]
 	condition.add_child(child_condition)
-	child_condition.owner = EditorInterface.get_edited_scene_root()
+	if is_instance_valid(condition):
+		child_condition.owner = condition.owner
 	add_condition(child_condition)
 	condition.notify_property_list_changed()
 

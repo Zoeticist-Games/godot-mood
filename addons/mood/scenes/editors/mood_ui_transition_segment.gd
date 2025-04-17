@@ -75,6 +75,12 @@ var _editor: CanvasItem
 ## UI to add signal hooks they always get concatenated at the end of the file.
 
 func _on_save_to_tree_pressed() -> void:
+	var name := transition.name
 	from_mood.add_child(transition)
-	transition.owner = from_mood.owner
+	var owner := from_mood.owner
+	transition.owner = owner
+	transition.name = name # re-assigning necessary
+	Mood.Recursion.recurse(transition, (func(n): n.owner = owner), [], true)
+	transition.notify_property_list_changed()
+	#transition.owner = from_mood.owner
 	save_to_tree_button.hide()
