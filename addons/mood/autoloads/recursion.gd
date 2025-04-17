@@ -3,7 +3,7 @@ extends Node
 
 static func __get_fn(t: Object, m: Variant) -> Callable:
 	if m is Callable:
-		return m
+		return m.bind(t)
 	if m is String and t.has_method(m):
 		return Callable(t, m)
 
@@ -37,7 +37,7 @@ static func recurse(node: Node, method: Variant = null, varargs: Variant = [], d
 		varargs = [varargs]
 
 	if deferred:
-		varargs = varargs.reverse()
+		varargs.reverse()
 
 	# depth first = call on self, then call on children
 	# breadth first = call on children, then call on self
