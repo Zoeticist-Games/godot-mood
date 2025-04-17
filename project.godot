@@ -15,6 +15,7 @@ markdown_book/docs_folder="res://addons/mood/docs/"
 [application]
 
 config/name="Mood"
+config/tags=PackedStringArray("addon", "fsm")
 run/main_scene="res://addons/mood/scenes/editors/mood_ui_transitions_container.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
