@@ -105,7 +105,14 @@ signal mood_exited(next_mood: Mood)
 ## When [member MoodMachineChild.machine] has [member MoodMachine.evaluate_moods_directly]
 ## set to [code]true[/code], the root_condition represents the ingress to evaluating the
 ## validity of a Mood, and must be set.
-@export var root_condition: MoodCondition
+@export var root_condition: MoodCondition:
+	set(val):
+		if root_condition == val:
+			return
+
+		root_condition = val
+		notify_property_list_changed()
+		update_configuration_warnings()
 
 #endregion
 
