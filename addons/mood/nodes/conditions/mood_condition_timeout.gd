@@ -10,35 +10,57 @@ class_name MoodConditionTimeout extends MoodCondition
 
 #region Constants
 
-const Editor := preload("res://addons/mood/scenes/editors/components/mood_ui_condition.tscn")
-const SubEditor := preload("res://addons/mood/scenes/editors/mood_ui_condition_timeout.tscn")
-
-## Controls how we treat validity relative to the timeout.
-enum ValidationMode {
-	## Become valid on mood entry, become invalid on mood exit or timeout.
-	VALID_ON_ENTRY = 0,
-	## Become valid on mood exit, become invalid on mood entry or timeout.
-	VALID_ON_EXIT = 1,
-	## Become valid on mood entry until timeout.
-	VALID_ON_ENTRY_UNBOUND = 2,
-	## Become valid on mood exit until timeout.
-	VALID_ON_EXIT_UNBOUND = 3 
-}
+#const Editor := preload("res://addons/mood/scenes/editors/components/mood_ui_condition.tscn")
+#const SubEditor := preload("res://addons/mood/scenes/editors/mood_ui_condition_timeout.tscn")
 
 #region Public Variables
 
-## How long between when this condition becomes valid and the timeout occurs. 
+## How long between when this condition becomes valid and the timeout occurs.
 @export_range(0.0, 60.0, 1.0, "or_greater") var time_sec := 1.0
-## Whether or not you want validity on mood entry or exit, and whether or not you want
-## to invalidate on mood entry or exit (typically when [member MoodMachine.evaluate_nodes_directly]
-## is [code]true[/code]) or only timeout (typically when false).
-@export var validation_mode := ValidationMode.VALID_ON_ENTRY
-## If this is set to [code]false[/code], then the condition is [i]always[/i] valid,
-## [i]except[/i] for when the timeout is triggered on entry/exit as per [member validation_mode].
-@export var trigger_sets_valid_to := true
-## If using an UNBOUND validation mode, whether or not we want to reset the
-## timer when re-triggering validity, or just leave it alone.
-@export var reset_on_reentry := true
+
+## By default, this rule is considered [b]invalid[/b] until the timer
+## times out. Setting this flag inverts that, such that the condition begins
+## as valid and the trigger sets it as invalid.
+@export var invert_validity := false
+
+## By default, if the [member clear_valid_on_mood_enter] flag is set,
+## the timer will be removed when entering the mood, and if the
+## [member clear_valid_on_mood_exit] flag is set, the timer will be removed
+## when exiting the mood. If this flag is true, however, the timer
+## will persist despite validity clearance.
+@export var persist_timer := false
+
+@export_group("On Mood Entry", "on_mood_entry_")
+## If this is true, any persisted timers (due to lack of clearance
+## or due to [member persist_timer] being [code]true[/code]) will be
+## reset on mood entry.
+@export var on_mood_entry_start_timer := true
+
+## If true, reset validity when entering the mood this condition belongs to.
+## if [member persist_timer] is [code]false[/code], [b]also[/b] remove the timer.
+@export var on_mood_entry_clear_valid := true
+
+## if [member start_timer_on_mood_entry] is [code]false[/code],
+## [member persist_timer] is [code]true[/code], and
+## [member clear_timer_on_mood_entry]  is false, you may want to still
+## reset the timer if going out of and then back into the mood for this condition.
+@export var on_mood_entry_reset_timer := false
+
+@export_group("On Mood Exit", "on_mood_exit_")
+## If this is true, any persisted timers (due to lack of clearance
+## or due to [member persist_timer] being [code]true[/code]) will be
+## reset on mood entry.
+@export var on_mood_exit_start_timer := false
+
+## If true, reset validity when entering the mood this condition belongs to.
+## if [member persist_timer] is [code]false[/code], [b]also[/b] remove the timer.
+@export var on_mood_exit_clear_valid := true
+
+## if [member on_mood_exit_start_timer] is [code]false[/code],
+## [member persist_timer] is [code]true[/code], and [member on_mood_exit_clear_valid]
+## is [code]false[/code], you may want to still reset the timer if going out of and
+## then back into the mood for this condition.
+@export var on_mood_exit_reset_timer := false
 
 @export_group("Timer Settings")
 ## passthrough for [member SceneTree.create_timer] [param process_always].
@@ -47,6 +69,14 @@ enum ValidationMode {
 @export var process_in_physics := false
 ## passthrough for [member SceneTree.create_timer] [param ignore_time_scale].
 @export var ignore_time_scale := false
+
+## Get the [member SceneTreeTimer.time_left] as a reader.
+var time_left: float:
+	get():
+		if not is_instance_valid(_timer):
+			return 0.0
+
+		return _timer.time_left
 
 #endregion
 
@@ -61,55 +91,54 @@ var _valid := false
 
 ## when we set up, _valid gets set up such that it can be triggered.
 func _ready() -> void:
-	_valid = !trigger_sets_valid_to
+	super()
+
+	_valid = invert_validity
 
 ## Validity is reset when the parent mood is entered.
 func _enter_mood(_previous_mood: Mood) -> void:
-	match validation_mode:
-		ValidationMode.VALID_ON_ENTRY, ValidationMode.VALID_ON_ENTRY_UNBOUND:
-			_make_valid()
-		ValidationMode.VALID_ON_EXIT:
-			_on_timer_timeout()
+	if on_mood_entry_clear_valid:
+		_valid = invert_validity
 
-## When we leave this mood, we are never valid.
+	if is_instance_valid(_timer) and not persist_timer:
+		_timer.timeout.disconnect(_on_timer_timeout)
+		_timer = null
+
+	if on_mood_entry_start_timer or (is_instance_valid(_timer) and on_mood_entry_reset_timer):
+		start_timer()
+
 func _exit_mood(_next_mood: Mood) -> void:
-	match validation_mode:
-		ValidationMode.VALID_ON_EXIT, ValidationMode.VALID_ON_EXIT_UNBOUND:
-			_make_valid()
-		ValidationMode.VALID_ON_ENTRY:
-			_on_timer_timeout()
+	if on_mood_exit_clear_valid:
+		_valid = invert_validity
+		if is_instance_valid(_timer) and not persist_timer:
+			_timer.timeout.disconnect(_on_timer_timeout)
+			_timer = null
+
+	if on_mood_exit_start_timer or (is_instance_valid(_timer) and on_mood_exit_reset_timer):
+		start_timer()
 
 #endregion
 
 #region Public Methods
 
 func should_skip_property(field: String) -> bool:
-	return field in ["time_sec", "validation_mode", "trigger_sets_valid_to", "reset_on_reentry"]
+	return false
+	#return field in ["time_sec", "validation_mode", "trigger_sets_valid_to", "reset_on_reentry"]
 
 func is_valid(cache: Dictionary = {}) -> bool:
 	return _valid
 
-#endregion
-
-#region Private Methods
-
-## Trigger the timer and set self as _valid.
-func _make_valid() -> void:
-	if is_instance_valid(_timer):
-		if reset_on_reentry:
-			_create_timer()
-		else: # just to illustrate that if we have a timer but we're not re-entering, we just let it go.
-			pass
-	else:
-		_create_timer()
-
-func _create_timer() -> void:
+## Start the timer.
+func start_timer() -> void:
 	if is_instance_valid(_timer):
 		_timer.timeout.disconnect(_on_timer_timeout)
 		_timer = null
 	_timer = get_tree().create_timer(time_sec, process_always, process_in_physics, ignore_time_scale)
 	_timer.timeout.connect(_on_timer_timeout, CONNECT_ONE_SHOT)
-	_valid = trigger_sets_valid_to
+
+#endregion
+
+#region Private Methods
 
 #endregion
 
@@ -117,7 +146,7 @@ func _create_timer() -> void:
 
 ## When we time out the timer we our never considered valid at that point.
 func _on_timer_timeout() -> void:
+	_valid = !invert_validity
 	if is_instance_valid(_timer) and _timer.timeout.is_connected(_on_timer_timeout):
 		_timer.timeout.disconnect(_on_timer_timeout)
 	_timer = null
-	_valid = !trigger_sets_valid_to
