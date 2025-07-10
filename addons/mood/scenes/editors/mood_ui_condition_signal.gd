@@ -2,6 +2,8 @@
 extends VBoxContainer
 
 @export var index_label: Label
+@export var go_to_node_button: Button
+
 @export var condition: MoodConditionSignal:
 	set(val):
 		if condition == val:
@@ -13,6 +15,9 @@ extends VBoxContainer
 				condition.property_list_changed.disconnect(_refresh_selection)
 
 		condition = val
+
+		if is_instance_valid(go_to_node_button):
+			go_to_node_button.visible = condition.is_inside_tree()
 
 		if condition:
 			_update_label()
@@ -87,5 +92,5 @@ func _on_select_signaler_confirmed(node_path: NodePath) -> void:
 	condition.signal_target = get_tree().edited_scene_root.get_node(node_path)
 
 func _on_go_to_node_button_pressed() -> void:
-	if is_instance_valid(condition):
+	if condition.is_inside_tree():
 		EditorInterface.inspect_object(condition)

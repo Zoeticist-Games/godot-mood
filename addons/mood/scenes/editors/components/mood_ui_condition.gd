@@ -26,6 +26,9 @@ extends VBoxContainer
 		index_label.text = condition.name
 		condition.renamed.connect(_update_label)
 
+		if is_instance_valid(go_to_node_button):
+			go_to_node_button.visible = condition.is_inside_tree()
+
 		if "SubEditor" in condition:
 			var sub_editor: CanvasItem = (condition.get("SubEditor") as PackedScene).instantiate()
 			sub_editor.condition = condition
@@ -66,5 +69,5 @@ func _on_remove_condition_pressed() -> void:
 	queue_free.call_deferred()
 
 func _on_go_to_node_button_pressed() -> void:
-	if is_instance_valid(condition):
+	if condition.is_inside_tree():
 		EditorInterface.inspect_object(condition)

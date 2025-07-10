@@ -32,6 +32,10 @@ const COLOR_DESELECTED := Color(0x7F7F7FFF)
 			condition.property_list_changed.disconnect(_update_property_editor)
 
 		condition = val
+
+		if is_instance_valid(go_to_node_button):
+			go_to_node_button.visible = condition.is_inside_tree()
+
 		index_label.text = condition.name
 		condition.renamed.connect(_update_label)
 		condition.property_list_changed.connect(_update_property_editor)
@@ -325,5 +329,5 @@ func _on_node_edit_confirmed(node_path: NodePath) -> void:
 		%SelectedNodeLabel.hide()
 
 func _on_go_to_node_button_pressed() -> void:
-	if is_instance_valid(condition):
+	if condition.is_inside_tree():
 		EditorInterface.inspect_object(condition)

@@ -11,7 +11,7 @@ border_width_right = 2
 border_width_bottom = 1
 border_color = Color(0.6, 0.6, 0.6, 1)
 
-[node name="MoodUiSignalTransition" type="VBoxContainer" node_paths=PackedStringArray("index_label", "remove_button", "item_container", "signal_list_container", "signaler_button", "signaler_label")]
+[node name="MoodUiSignalTransition" type="VBoxContainer" node_paths=PackedStringArray("index_label", "go_to_node_button", "remove_button", "item_container", "signal_list_container", "signaler_button", "signaler_label")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -21,6 +21,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_ssvwi")
 index_label = NodePath("HeaderContainer/HBoxContainer/HBoxContainer/Index")
+go_to_node_button = NodePath("HeaderContainer/HBoxContainer/HBoxContainer/GoToNodeButton")
 remove_button = NodePath("HeaderContainer/HBoxContainer/RemoveConditionButton")
 item_container = NodePath("HBoxContainer/ItemListContainer")
 signal_list_container = NodePath("HBoxContainer")
